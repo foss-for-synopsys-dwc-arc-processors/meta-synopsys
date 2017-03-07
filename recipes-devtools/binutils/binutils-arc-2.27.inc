@@ -9,7 +9,6 @@ SRC_URI = "\
 	file://0008-don-t-let-the-distro-compiler-point-to-the-wrong-ins.patch \
 	file://0009-warn-for-uses-of-system-directories-when-cross-linki.patch \
 	file://0010-Fix-rpath-in-libtool-when-sysroot-is-enabled.patch \
-	file://0011-Change-default-emulation-for-mips64-linux.patch \
 	file://0012-Add-support-for-Netlogic-XLP.patch \
 	file://0013-fix-the-incorrect-assembling-for-ppc-wait-mnemonic.patch \
 	file://0014-libtool-remove-rpath.patch \
