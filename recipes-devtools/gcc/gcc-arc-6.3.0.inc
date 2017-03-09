@@ -61,6 +61,7 @@ EXTRA_OECONF_INITIAL = "\
 "
 
 EXTRA_OECONF_append_libc-uclibc = " --disable-decimal-float "
+EXTRA_OECONF_append = "--with-cpu=archs"
 
 EXTRA_OECONF_PATHS = "\
 	--with-gxx-include-dir=/not/exist{target_includedir}/c++/${BINV} \

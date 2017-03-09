@@ -1,5 +1,7 @@
 require arch-arc.inc
+
 DEFAULTTUNE ?= "archs"
+TUNE_FEATURES += "arcv2"
 
 TUNEVALID[hs] = "Enable ARC HS with atomic instructions"
 TUNEVALID[hs34] = "Enable ARC HS with atomic and h/w multiplier instructions"

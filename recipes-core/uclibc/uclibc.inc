@@ -147,6 +147,18 @@ do_configure() {
 
 }
 
+python do_configure_arch() {
+    if bb.utils.contains("TUNE_FEATURES", "arcv2", True, False, d):
+        kconf = "CONFIG_ARC_CPU_HS=y"
+    else:
+        kconf = "CONFIG_ARC_CPU_700=y"
+
+    f = open(d.getVar("S", True) + "/.config", "a")
+    f.write(kconf)
+    f.close()
+}
+addtask do_configure_arch before do_compile after do_configure
+
 do_install() {
 	oe_runmake PREFIX=${D} install
 	rm -rf ${D}${includedir}/iconv.h
