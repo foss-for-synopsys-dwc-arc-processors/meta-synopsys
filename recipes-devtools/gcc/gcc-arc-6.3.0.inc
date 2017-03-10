@@ -61,7 +61,12 @@ EXTRA_OECONF_INITIAL = "\
 "
 
 EXTRA_OECONF_append_libc-uclibc = " --disable-decimal-float "
-EXTRA_OECONF_append = "--with-cpu=archs"
+
+# set default -mcpu
+python () {
+	if bb.utils.contains("TUNE_FEATURES", "arcv2", True, False, d):
+		d.appendVar("EXTRA_OECONF", " --with-cpu=archs")
+}
 
 EXTRA_OECONF_PATHS = "\
 	--with-gxx-include-dir=/not/exist{target_includedir}/c++/${BINV} \

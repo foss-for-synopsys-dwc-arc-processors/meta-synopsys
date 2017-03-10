@@ -20,3 +20,9 @@ TUNE_FEATURES_tune-hs34 += "hs34"
 TUNE_FEATURES_tune-archs += "archs"
 TUNE_FEATURES_tune-hs38 += "hs38"
 TUNE_FEATURES_tune-hs38linux += "hs38-fpu"
+
+def arc_machine_dict(machdata, d):
+    machdata["linux-uclibc"] = { "arc" : ( 195, 0, 0, True, 32) }
+    return machdata
+
+PACKAGEQA_EXTRA_MACHDEFFUNCS = "arc_machine_dict"

@@ -15,8 +15,6 @@ EXTRA_OEMAKE_append_libc-musl = "\
                                  gt_cv_func_gnugettext2_libc=yes \
                                 "
 
-EXTRA_OEMAKE_append = "${TUNE_CCARGS}"
-
 EXTRA_OECONF_class-native = "--enable-targets=all \
                              --enable-64-bit-bfd \
                              --enable-install-libiberty \
