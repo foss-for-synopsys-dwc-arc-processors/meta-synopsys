@@ -141,23 +141,24 @@ do_configure() {
 
         # Mangle the resulting .config depending on OE variables
         sed -i -e '${configmangle}' ${S}/merged.config
+
+	echo '${uclibc_cpu_target}' >>${S}/merged.config
+
 	cp ${S}/merged.config .config
         merge_config.sh -r -n -m .config ${@" ".join(find_cfgs(d))}
 	cml1_do_configure
 
 }
 
-python do_configure_arch() {
+python () {
     if bb.utils.contains("TUNE_FEATURES", "arcv2", True, False, d):
         kconf = "CONFIG_ARC_CPU_HS=y"
     else:
         kconf = "CONFIG_ARC_CPU_700=y"
 
-    f = open(d.getVar("S", True) + "/.config", "a")
-    f.write(kconf)
-    f.close()
+    d.setVar('uclibc_cpu_target', kconf)
+    d.setVar('configmangle_append', "/^CONFIG_ARC_CPU/d\n")
 }
-addtask do_configure_arch before do_compile after do_configure
 
 do_install() {
 	oe_runmake PREFIX=${D} install
