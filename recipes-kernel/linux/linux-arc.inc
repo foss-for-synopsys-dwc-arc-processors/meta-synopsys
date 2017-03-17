@@ -19,6 +19,5 @@ KERNEL_OUTPUT_DIR = "."
 KERNEL_CLASSES = ""
 
 do_configure_append() {
-	sed -i 's/CONFIG_INITRAMFS.*//g' ${B}/.config
 	echo 'CONFIG_INITRAMFS_SOURCE=""' >> ${B}/.config
 }
