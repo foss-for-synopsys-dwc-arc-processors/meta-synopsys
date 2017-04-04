@@ -29,6 +29,8 @@ TCMODE = "synopsys-arc"
 TCLIBC = "uclibc"
 
 MACHINE = "nsimhs"
+INITRAMFS_IMAGE = "busybox-image-initramfs"
+INITRAMFS_IMAGE_BUNDLE = "1"
 
 #
 # Where to place downloads
