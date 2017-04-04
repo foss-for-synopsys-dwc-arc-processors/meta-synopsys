@@ -1,0 +1,37 @@
+From 7974cc07a9317ada16a3c2edc1e25cd64607e884 Mon Sep 17 00:00:00 2001
+From: Cupertino Miranda <cmiranda@synopsys.com>
+Date: Mon, 24 Oct 2016 12:52:04 +0200
+Subject: [PATCH 1/8] Disable warning on absolute relocs when symbol is local.
+
+R_ARC_32 and R_ARC_32_ME cannot be generated as dynamic relocs.
+However, a warning message and check_relocs was aborting when this type of
+reloc was being resolved to a local symbol.
+This is wrong as local symbols are resolvable at link time.
+
+bfd/ChangeLog:
+
+    Cupertino Miranda  <cmiranda@synopsys.com>
+
+	* elf32-arc.c (elf_arc_check_relocs): Added condition to disable
+	warning and "Bad value" for local symbols ARC_32 or ARC_32_ME relocs.
+---
+ bfd/elf32-arc.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/bfd/elf32-arc.c b/bfd/elf32-arc.c
+index 61e5237b4083..3dd5653bd02c 100644
+--- a/bfd/elf32-arc.c
++++ b/bfd/elf32-arc.c
+@@ -1887,7 +1887,8 @@ elf_arc_check_relocs (bfd *			 abfd,
+ 	       and the dynamic linker can not resolve these.  However
+ 	       the error should not occur for e.g. debugging or
+ 	       non-readonly sections.  */
+-	    if ((bfd_link_dll (info) && !bfd_link_pie (info))
++	    if (h != NULL
++		&& (bfd_link_dll (info) && !bfd_link_pie (info))
+ 		&& (sec->flags & SEC_ALLOC) != 0
+ 		&& (sec->flags & SEC_READONLY) != 0
+ 		&& ((sec->flags & SEC_CODE) != 0
+-- 
+2.7.4
+

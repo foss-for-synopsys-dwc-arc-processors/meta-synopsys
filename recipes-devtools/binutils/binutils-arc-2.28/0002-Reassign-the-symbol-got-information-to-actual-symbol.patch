@@ -1,0 +1,39 @@
+From 4073e59c845a102e0dc054c66c3f02dc664e6049 Mon Sep 17 00:00:00 2001
+From: Cupertino Miranda <cmiranda@synopsys.com>
+Date: Mon, 24 Oct 2016 22:19:48 +0200
+Subject: [PATCH 2/8] Reassign the symbol got information to actual symbol when
+ indirect.
+
+GOT information would not be reassign to symbol when it became a indect
+symbol.
+
+bfd/ChangeLog:
+
+    Cupertino Miranda  <cmiranda@synopsys.com>
+
+	* elf32-arc.c (elf_arc_relocate_section): Fixed reassign of indirect
+	symbols.
+---
+ bfd/elf32-arc.c | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/bfd/elf32-arc.c b/bfd/elf32-arc.c
+index 3dd5653bd02c..125bd58769b0 100644
+--- a/bfd/elf32-arc.c
++++ b/bfd/elf32-arc.c
+@@ -1537,7 +1537,12 @@ elf_arc_relocate_section (bfd *		          output_bfd,
+ 
+ 	  while (h->root.type == bfd_link_hash_indirect
+ 		 || h->root.type == bfd_link_hash_warning)
++	  {
++	    struct elf_link_hash_entry *h_old = h;
+ 	    h = (struct elf_link_hash_entry *) h->root.u.i.link;
++	    if(h->got.glist == 0 && h_old->got.glist != h->got.glist)
++	      h->got.glist = h_old->got.glist;
++	  }
+ 
+ 	  /* TODO: Need to validate what was the intention.  */
+ 	  /* BFD_ASSERT ((h->dynindx == -1) || (h->forced_local != 0)); */
+-- 
+2.7.4
+

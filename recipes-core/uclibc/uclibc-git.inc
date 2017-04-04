@@ -8,6 +8,7 @@ SRC_URI = " \
         file://uClibc.distro \
         file://obstack.cfg \
         file://locale.cfg \
+        file://0001-ldso-Troubleshoot-unresolved-symbol.patch \
 "
 S = "${WORKDIR}/git"
 

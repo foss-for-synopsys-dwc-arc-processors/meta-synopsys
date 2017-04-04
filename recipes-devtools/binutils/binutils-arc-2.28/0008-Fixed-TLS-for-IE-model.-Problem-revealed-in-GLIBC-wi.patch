@@ -1,0 +1,68 @@
+From c4257e1a5d3eaeeefb0b5404ca1f6ea99e890541 Mon Sep 17 00:00:00 2001
+From: Cupertino Miranda <cmiranda@synopsys.com>
+Date: Thu, 29 Dec 2016 17:10:01 +0100
+Subject: [PATCH 8/8] Fixed TLS for IE model. Problem revealed in GLIBC with
+ static linking.
+
+In the case of static relocation, the GOT entries are fixed at link time
+and are set by the linker. This happens always just in case.
+In order to compute the right TLS offset it is necessary to add TCB_SIZE
+to the offset, just in case the dynamic linker is not executed (static
+linked case).
+This problem does appear in dynamic linked applications, as the dynamic
+linker is adding this TCB_SIZE by operating the TCB block structure.
+
+Still need to add a test case for this.
+---
+ bfd/arc-got.h   | 6 +++++-
+ bfd/elf32-arc.c | 1 -
+ 2 files changed, 5 insertions(+), 2 deletions(-)
+
+diff --git a/bfd/arc-got.h b/bfd/arc-got.h
+index abf3815bbebd..7d0ec42000bc 100644
+--- a/bfd/arc-got.h
++++ b/bfd/arc-got.h
+@@ -22,6 +22,8 @@
+ #ifndef ARC_GOT_H
+ #define ARC_GOT_H
+ 
++#define TCB_SIZE (8)
++
+ enum tls_type_e
+ {
+   GOT_UNKNOWN = 0,
+@@ -354,7 +356,7 @@ relocate_fix_got_relocs_for_got_info (struct got_entry **          list_p,
+ 		  = tls_sec->output_section->vma;
+ 
+ 		bfd_put_32 (output_bfd,
+-			    sym_value - sec_vma,
++			    sym_value - sec_vma + (elf_hash_table (info)->dynamic_sections_created ? 0 : TCB_SIZE),
+ 			    htab->sgot->contents + entry->offset
+ 			    + (entry->existing_entries == TLS_GOT_MOD_AND_OFF
+ 			       ? 4 : 0));
+@@ -478,8 +480,10 @@ GOT_OFFSET = %#lx, GOT_VMA = %#lx, INDEX = %ld, ADDEND = 0x0\n",
+ 	{
+ 	  bfd_vma addend = 0;
+ 	  if (list->type == GOT_TLS_IE)
++	  {
+ 	    addend = bfd_get_32 (output_bfd,
+ 				 htab->sgot->contents + got_offset);
++	  }
+ 
+ 	  ADD_RELA (output_bfd, got,
+ 		    got_offset + (e == TLS_GOT_MOD_AND_OFF ? 4 : 0),
+diff --git a/bfd/elf32-arc.c b/bfd/elf32-arc.c
+index 7e0093f5278b..451309076a8b 100644
+--- a/bfd/elf32-arc.c
++++ b/bfd/elf32-arc.c
+@@ -1135,7 +1135,6 @@ arc_special_overflow_checks (const struct arc_relocation_data reloc_data,
+ #define TLS_REL (bfd_signed_vma) \
+   ((elf_hash_table (info))->tls_sec->output_section->vma)
+ #define TLS_TBSS (8)
+-#define TCB_SIZE (8)
+ 
+ #define none (0)
+ 
+-- 
+2.7.4
+
