@@ -1,9 +1,9 @@
-SRCREV = "61afc0c37647e0736edbc577f0d2fc1668269c64"
+SRCREV = "a3d19f43e0a2a0577b8bf659fd2ffa866234bb1a"
 
 FILESEXTRAPATHS =. "${FILE_DIRNAME}/uclibc-git:"
 
 SRC_URI = " \
-	git://github.com/foss-for-synopsys-dwc-arc-processors/uClibc;protocol=https;branch=arc-2016.09 \
+	git://git.uclibc-ng.org/git/uclibc-ng;protocol=https;branch=master \
         file://uClibc.machine \
         file://uClibc.distro \
         file://obstack.cfg \
