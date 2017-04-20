@@ -9,7 +9,7 @@ LIBCOVERRIDE = ":libc-uclibc"
 OVERRIDES .= "${LIBCOVERRIDE}"
 
 PREFERRED_PROVIDER_virtual/libc ?= "uclibc"
-PREFERRED_PROVIDER_virtual/libiconv ?= "libiconv"
+PREFERRED_PROVIDER_virtual/libiconv ?= "uclibc"
 PREFERRED_PROVIDER_virtual/libintl ?= "gettext"
 PREFERRED_PROVIDER_virtual/nativesdk-libintl ?= "nativesdk-glibc"
 PREFERRED_PROVIDER_virtual/nativesdk-libiconv ?= "nativesdk-glibc"

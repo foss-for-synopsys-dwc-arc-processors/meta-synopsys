@@ -5,7 +5,7 @@ require uclibc-git.inc
 STAGINGCC = "gcc-cross-initial-${TARGET_ARCH}"
 STAGINGCC_class-nativesdk = "gcc-crosssdk-initial-${TARGET_ARCH}"
 
-PROVIDES += "virtual/libc virtual/${TARGET_PREFIX}libc-for-gcc"
+PROVIDES += "virtual/libc virtual/${TARGET_PREFIX}libc-for-gcc virtual/libiconv"
 
 DEPENDS = "virtual/${TARGET_PREFIX}binutils \
            virtual/${TARGET_PREFIX}gcc-initial \
