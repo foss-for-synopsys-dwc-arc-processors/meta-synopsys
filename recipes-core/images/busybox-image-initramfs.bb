@@ -5,8 +5,6 @@ IMAGE_FSTYPES = "${INITRAMFS_FSTYPES}"
 IMAGE_FEATURES = "debug-tweaks"
 IMAGE_LINGUAS = ""
 
-INITRAMFS_IMAGE = "busybox-image-initramfs"
-
 VIRTUAL-RUNTIME_login_manager = "busybox"
 VIRTUAL-RUNTIME_init_manager = "sysvinit"
 VIRTUAL-RUNTIME_initscripts = "initscripts"
