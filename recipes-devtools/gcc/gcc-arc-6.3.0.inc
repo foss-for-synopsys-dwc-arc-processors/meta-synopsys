@@ -1,7 +1,7 @@
 require recipes-devtools/gcc/gcc-common.inc
 
-GCC_TAG = "arc-2017.03-eng011"
-SRC_URI[sha256sum] = "4cf491db7c8ab5af0e4f24b304d113e5e54ba15c7a09619a2e681f35b16b61b1"
+GCC_TAG = "arc-2017.03-rc2"
+SRC_URI[sha256sum] = "dcf2219133448321d9bcdff4513f3283c8f47ee7baa77eeb567252c8279b1813"
 SRC_URI = "\
 	https://github.com/foss-for-synopsys-dwc-arc-processors/gcc/archive/${GCC_TAG}.tar.gz;downloadfilename=gcc-${PV}.tar.gz \
 	file://0014-optional-libstdc.patch \

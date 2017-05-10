@@ -1,5 +1,5 @@
-BINUTILS_TAG = "arc-2017.03-eng011"
-SRC_URI[sha256sum] = "61290392d839d6807f3b5bc96c268a1fca9921efaf65c168f7346f1cb6c7dc5e"
+BINUTILS_TAG = "arc-2017.03-rc2"
+SRC_URI[sha256sum] = "09535f0dea6829a45323e91393ea8484afde9cf578c80e9b5cc96fc0e63d6cf7"
 SRC_URI = "\
 	https://github.com/foss-for-synopsys-dwc-arc-processors/binutils-gdb/archive/${BINUTILS_TAG}.tar.gz;downloadfilename=binutils-${PV}.tar.gz \
 	file://0003-gprof-add-uclibc-support-to-configure.patch \
@@ -14,13 +14,6 @@ SRC_URI = "\
 	file://0013-Add-support-for-Netlogic-XLP.patch \
 	file://0014-fix-the-incorrect-assembling-for-ppc-wait-mnemonic.patch \
 	file://0015-sync-with-OE-libtool-changes.patch \
-	file://0001-Disable-warning-on-absolute-relocs-when-symbol-is-lo.patch \
-	file://0002-Reassign-the-symbol-got-information-to-actual-symbol.patch \
-	file://0005-xxx-don-t-convert-_DYNAMIC-to-GOT.patch \
-	file://0006-Fixed-issue-with-ARC_PC32-reloc-also-generating-a-dy.patch \
-	file://0007-Fix-for-global-undefined-symbol-in-case-of-ARC_GOT32.patch \
-	file://0008-Fixed-TLS-for-IE-model.-Problem-revealed-in-GLIBC-wi.patch \
-	file://0001-OpenADK-fix.patch \
 "
 
 S = "${WORKDIR}/binutils-gdb-${BINUTILS_TAG}"

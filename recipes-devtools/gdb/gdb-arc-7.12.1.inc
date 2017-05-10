@@ -1,5 +1,5 @@
-GDB_TAG = "arc-2017.03-eng011-gdb"
-SRC_URI[sha256sum] = "63267d5ac7074a00180c774e210848c0b90da80d9afe205e5befd3f9221b90c4"
+GDB_TAG = "arc-2017.03-rc2-gdb"
+SRC_URI[sha256sum] = "674a8c0abcca247ce996c9c68c0631cfb49ca27c17e40cc677a733f5c677c13f"
 SRC_URI = " \
 	https://github.com/foss-for-synopsys-dwc-arc-processors/binutils-gdb/archive/${GDB_TAG}.tar.gz;downloadfilename=gdb-${PV}.tar.gz \
 	file://0001-include-sys-types.h-for-mode_t.patch \
