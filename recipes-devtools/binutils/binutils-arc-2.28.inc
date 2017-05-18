@@ -14,6 +14,7 @@ SRC_URI = "\
 	file://0013-Add-support-for-Netlogic-XLP.patch \
 	file://0014-fix-the-incorrect-assembling-for-ppc-wait-mnemonic.patch \
 	file://0015-sync-with-OE-libtool-changes.patch \
+	file://0016-Put-soname-in-the-version-definition-section.patch \
 "
 
 S = "${WORKDIR}/binutils-gdb-${BINUTILS_TAG}"
