@@ -44,7 +44,7 @@ Otherwise, if you are not familiar with repo tool, you can clone every
 repository by hand:
 
 1. Clone openembedded-core git repository with the proper branch ready
-git clone -b morty http://github.com/foss-for-synopsys-dwc-arc-processors/synopsys-oe-core.git
+git clone -b morty http://github.com/foss-for-synopsys-dwc-arc-processors/synopsys-oe-core.git oe
 
 2. Clone meta-openembedded git repository with the proper branch ready
 git clone -b morty http://git.openembedded.org/meta-openembedded
@@ -53,11 +53,14 @@ git clone -b morty http://git.openembedded.org/meta-openembedded
 git clone -b morty http://github.com/foss-for-synopsys-dwc-arc-processors/meta-synopsys.git
 
 5. Enter the openembedded-core directory
-cd synopsys-oe-core
+cd oe
 
-6. Initialize build directory by using template files
+6. Clone the bitbake project
+git clone -b 1.32 http://git.openembedded.org/bitbake
+
+7. Initialize build directory by using template files
 export TEMPLATECONF=../meta-synopsys/conf
 source oe-init-build-env build
 
-7. Build synopsys image (currently, the rootfs is used as initramfs)
+8. Build synopsys image (currently, the rootfs is used as initramfs)
 bitbake virtual/kernel
