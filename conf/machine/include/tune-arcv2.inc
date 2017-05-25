@@ -1,28 +1,45 @@
 require arch-arc.inc
 
 DEFAULTTUNE ?= "archs"
-TUNE_FEATURES += "arcv2"
+TUNE_PKGARCH = "${TUNE_PKGARCH_tune-${DEFAULTTUNE}}"
 
-TUNEVALID[hs] = "Enable ARC HS with atomic instructions"
-TUNEVALID[hs34] = "Enable ARC HS with atomic and h/w multiplier instructions"
-TUNEVALID[archs] = "Enable ARC HS generic CPU support"
-TUNEVALID[hs38] = "Enable ARC HS full feature instructions"
-TUNEVALID[hs38linux] = "Enable ARC HS full feature instructions and double-precision FPU"
+TUNEVALID[hs] = "Enable ARC HS core with 32-bit atomic ops"
+TUNE_CCARGS .= "${@bb.utils.contains('TUNE_FEATURES', 'hs', ' -mcpu=hs', '', d)}"
 
-TUNE_CCARGS_tune-hs = "-mcpu=hs"
-TUNE_CCARGS_tune-hs34 = "-mcpu=hs34"
-TUNE_CCARGS_tune-archs = "-mcpu=archs"
-TUNE_CCARGS_tune-hs38 = "-mcpu=hs38"
-TUNE_CCARGS_tune-hs38linux = "-mcpu=hs38_linux"
+TUNEVALID[llsc64] = "Enable 64-bit LL/SC operations"
+TUNE_CCARGS .= "${@bb.utils.contains('TUNE_FEATURES', 'llsc64', ' -mll64', '', d)}"
 
-TUNE_FEATURES_tune-hs += "hs"
-TUNE_FEATURES_tune-hs34 += "hs34"
-TUNE_FEATURES_tune-archs += "archs"
-TUNE_FEATURES_tune-hs38 += "hs38"
-TUNE_FEATURES_tune-hs38linux += "hs38-fpu"
+TUNEVALID[div_rem] = "Enable simple divider"
+TUNE_CCARGS .= "${@bb.utils.contains('TUNE_FEATURES', 'div_rem', ' -mdiv-rem', '', d)}"
+
+TUNEVALID[mpy] = "Enable simple hardware multiplier"
+TUNE_CCARGS .= "${@bb.utils.contains('TUNE_FEATURES', 'mpy', ' -mmpy-option=mpy', '', d)}"
+
+TUNEVALID[plus_qmacw] = "Enable most powerful hardware multiplier"
+TUNE_CCARGS .= "${@bb.utils.contains('TUNE_FEATURES', 'plus_qmacw', ' -mmpy-option=plus_qmacw', '', d)}"
+
+TUNEVALID[fpud_all] = "Enable double-precision FPU"
+TUNE_CCARGS .= "${@bb.utils.contains('TUNE_FEATURES', 'fpud_all', ' -mfpu=fpud_all', '', d)}"
+
+AVAILTUNES += "archs hs38 hs38linux"
+
+TUNE_FEATURES_tune-archs = "hs llsc64 mpy"
+TUNE_PKGARCH_tune-archs = "archs"
+PACKAGE_EXTRA_ARCHS_tune-archs = "archs hs38 hs38linux"
+
+TUNE_FEATURES_tune-hs38 = "hs llsc64 plus_qmacw"
+TUNE_PKGARCH_tune-hs38 = "hs38"
+PACKAGE_EXTRA_ARCHS_tune-hs38 = "hs38 hs38linux"
+
+TUNE_FEATURES_tune-hs38linux = "hs llsc64 plus_qmacw fpud_all"
+TUNE_PKGARCH_tune-hs38linux = "hs38linux"
+PACKAGE_EXTRA_ARCHS_tune-hs38linux = "hs38linux"
 
 def arc_machine_dict(machdata, d):
-    machdata["linux-uclibc"] = { "arc" : ( 195, 0, 0, True, 32) }
+    machdata["linux-uclibc"] = {
+                                 "arc" :   ( 195, 0, 0, True,  32),
+                                 "arceb" : ( 195, 0, 0, False, 32),
+                               }
     return machdata
 
 PACKAGEQA_EXTRA_MACHDEFFUNCS = "arc_machine_dict"
