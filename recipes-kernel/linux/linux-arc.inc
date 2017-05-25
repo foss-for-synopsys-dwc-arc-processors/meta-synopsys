@@ -13,6 +13,12 @@ S = "${WORKDIR}/linux-${PV}"
 DEPENDS += " libgcc"
 KERNEL_CC_append = " ${TOOLCHAIN_OPTIONS}"
 
+# ARCompact targets
+KERNEL_DEFCONFIG_axs101 = "axs101"
+KERNEL_DEFCONFIG_nsim700 = "nsim_700"
+KERNEL_DEFCONFIG_nsimosci = "nsimosci"
+
+# ARCv2 targets
 KERNEL_DEFCONFIG_axs103 = "axs103_smp"
 KERNEL_DEFCONFIG_nsimhs = "nsim_hs"
 KERNEL_DEFCONFIG_nsimoscihs = "nsimosci_hs"
