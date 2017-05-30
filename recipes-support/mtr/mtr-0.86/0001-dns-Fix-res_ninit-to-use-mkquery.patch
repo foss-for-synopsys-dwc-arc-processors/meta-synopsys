@@ -1,0 +1,33 @@
+From e719bb9c1e6020328ca090dfcc327c75ef42346e Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Myl=C3=A8ne=20Josserand?=
+ <mylene.josserand@free-electrons.com>
+Date: Tue, 30 May 2017 16:01:57 +0200
+Subject: [PATCH] dns: Fix res_ninit to use mkquery
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+In case of uClibc, res_nmkquery is not available but res_ninit is.
+Use mkquery in case that res_ninit is available.
+
+Signed-off-by: Mylène Josserand <mylene.josserand@free-electrons.com>
+---
+ dns.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/dns.c b/dns.c
+index 32b83c2..fc2b450 100644
+--- a/dns.c
++++ b/dns.c
+@@ -320,7 +320,7 @@ char nullstring[] = "";
+ 
+ int use_dns = 1;
+ 
+-#ifdef res_ninit
++#ifndef res_ninit
+ #define MY_RES_INIT() res_ninit(&myres);
+ #define RES_MKQUERY(a, b, c, d, e, f, g, h, i) \
+     res_nmkquery(&myres, a, b, c, d, e, f, g, h, i)
+-- 
+2.11.0
+
