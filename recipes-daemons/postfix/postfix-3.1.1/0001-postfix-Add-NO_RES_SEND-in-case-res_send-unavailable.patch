@@ -1,0 +1,54 @@
+From 1f8be05a357cfdceef80e1dd3bf343c6ae53890c Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Myl=C3=A8ne=20Josserand?=
+ <mylene.josserand@free-electrons.com>
+Date: Tue, 30 May 2017 11:22:44 +0200
+Subject: [PATCH] postfix: Add NO_RES_SEND in case res_send unavailable
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+uClibc does not include res_send function so add a patch
+that fix the postfix compilation.
+
+Patch taken from OpenWRT:
+https://gitlab.labs.nic.cz/turris/openwrt/commit/5636f78480ee24cc747acc3bcde8fb6101afc8ef
+
+Signed-off-by: Mylène Josserand <mylene.josserand@free-electrons.com>
+---
+ src/dns/dns_lookup.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
+
+diff --git a/src/dns/dns_lookup.c b/src/dns/dns_lookup.c
+index fe59aa6..2646c65 100644
+--- a/src/dns/dns_lookup.c
++++ b/src/dns/dns_lookup.c
+@@ -311,9 +311,17 @@ typedef struct DNS_REPLY {
+ static int dns_res_query(const char *name, int class, int type,
+ 			         unsigned char *answer, int anslen)
+ {
++    int     len;
++#ifdef NO_RES_SEND
++    len = res_query(name, class, type, answer, anslen);
++    if(len < 0)
++	    SET_H_ERRNO(HOST_NOT_FOUND);
++    else
++	    SET_H_ERRNO(0);
++    return len;
++#else
+     unsigned char msg_buf[MAX_DNS_QUERY_SIZE];
+     HEADER *reply_header = (HEADER *) answer;
+-    int     len;
+ 
+     /*
+      * Differences with res_query() from libbind:
+@@ -369,6 +377,7 @@ static int dns_res_query(const char *name, int class, int type,
+ 	}
+ 	return (len);
+     }
++#endif // NO_RES_SEND
+ }
+ 
+ /* dns_res_search - res_search() that can return negative replies */
+-- 
+2.11.0
+
