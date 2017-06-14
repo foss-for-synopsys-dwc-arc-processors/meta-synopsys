@@ -5,12 +5,20 @@ LICENSE = "GPLv2"
 
 inherit kernel
 
-SRC_URI = "https://www.kernel.org/pub/linux/kernel/v4.x/linux-${PV}.tar.xz"
+SRC_URI = "https://www.kernel.org/pub/linux/kernel/v4.x/linux-${PV}.tar.xz \
+	file://0001-arc-Remove-sometimes-misleading-toolchain-check.patch \
+"
 S = "${WORKDIR}/linux-${PV}"
 
 DEPENDS += " libgcc"
 KERNEL_CC_append = " ${TOOLCHAIN_OPTIONS}"
 
+# ARCompact targets
+KERNEL_DEFCONFIG_axs101 = "axs101"
+KERNEL_DEFCONFIG_nsim700 = "nsim_700"
+KERNEL_DEFCONFIG_nsimosci = "nsimosci"
+
+# ARCv2 targets
 KERNEL_DEFCONFIG_axs103 = "axs103_smp"
 KERNEL_DEFCONFIG_nsimhs = "nsim_hs"
 KERNEL_DEFCONFIG_nsimoscihs = "nsimosci_hs"
