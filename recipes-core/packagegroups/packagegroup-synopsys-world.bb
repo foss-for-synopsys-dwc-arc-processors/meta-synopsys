@@ -12,7 +12,7 @@ PACKAGES = "\
 
 # We just want to build package for the moment, not install them
 RDEPENDS_packagegroup-meta-apps += "\
-	    alsa-tools alsa-utils aspell at \
+	    avahi alsa-utils aspell at \
 	    base-files base-passwd bash bash-completion \
 	    bc bind bluez5 btrfs-tools busybox bzip2 \
 	    ca-certificates chrpath console-tools coreutils cpio curl \
@@ -21,7 +21,7 @@ RDEPENDS_packagegroup-meta-apps += "\
 	    hostap-conf hostap-utils \
 	    i2c-tools ifupdown init-ifupdown iproute2 iptables irda-utils \
 	    keymaps less lighttpd logrotate lrzsz lsof lzo \
-	    mc mdadm minicom mktemp \
+	    man man-pages mc mdadm minicom mktemp \
 	    ncurses netbase nfs-utils \
 	    openssh openssl parted patch perl ppp procps pseudo psplash python python3 \
 	    quota readline rpcbind rsync ruby \
@@ -37,7 +37,7 @@ RDEPENDS_packagegroup-meta-networking-apps += " \
 	    dhcpcd dnsmasq dnssec-conf dovecot ebtables esmtp \
 	    fetchmail fping inetutils ipsec-tools ipvsadm \
 	    lftp mtr ncftp netcat netcf net-snmp nftables ntp \
-	    openvpn postfix pptp-linux proftpd ptpd \
+	    openvpn postfix pptp-linux proftpd ptpd pure-ftpd \
 	    quagga rp-pppoe strongswan stunnel \
 	    tcpdump traceroute tunctl \
 	    vlan vsftpd \
