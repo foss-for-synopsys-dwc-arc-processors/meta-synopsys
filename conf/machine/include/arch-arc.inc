@@ -8,3 +8,5 @@ def arc_siteinfo_data(archinfo, osinfo, targetinfo, d):
     return archinfo, osinfo, targetinfo
 
 SITEINFO_EXTRA_DATAFUNCS = "arc_siteinfo_data"
+
+MACHINE_FEATURES_remove = "qemu-usermode"
