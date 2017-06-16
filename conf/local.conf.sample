@@ -25,9 +25,7 @@
 #MACHINE ?= "qemux86"
 #MACHINE ?= "qemux86-64"
 
-TCMODE = "synopsys-arc"
-TCLIBC = "uclibc"
-
+DISTRO = "synopsys"
 MACHINE = "nsimhs"
 INITRAMFS_IMAGE = "synopsys-image-minimal"
 INITRAMFS_IMAGE_BUNDLE = "1"
