@@ -1,0 +1,32 @@
+From 7bf074396c724d38ae36d1260131739e29dd283e Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Myl=C3=A8ne=20Josserand?=
+ <mylene.josserand@free-electrons.com>
+Date: Fri, 16 Jun 2017 16:19:20 +0200
+Subject: [PATCH] getloadavg: Remove hardcoded cflags
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Remove the hardcoded -L flags to check getloadavg in case of
+cross-compilation.
+
+Signed-off-by: Mylène Josserand <mylene.josserand@free-electrons.com>
+---
+ m4/getloadavg.m4 | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/m4/getloadavg.m4 b/m4/getloadavg.m4
+index ff8cf30..8eab6a9 100644
+--- a/m4/getloadavg.m4
++++ b/m4/getloadavg.m4
+@@ -54,7 +54,6 @@ if test $ac_have_func = no; then
+   # There is a commonly available library for RS/6000 AIX.
+   # Since it is not a standard part of AIX, it might be installed locally.
+   ac_getloadavg_LIBS=$LIBS
+-  LIBS="-L/usr/local/lib $LIBS"
+   AC_CHECK_LIB(getloadavg, getloadavg,
+                [LIBS="-lgetloadavg $LIBS"], [LIBS=$ac_getloadavg_LIBS])
+ fi
+-- 
+2.11.0
+
