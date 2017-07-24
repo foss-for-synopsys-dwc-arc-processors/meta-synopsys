@@ -4,7 +4,7 @@ This layer provides support for Synopsys / ARC CPU
 
 Supported SoCs / MACHINE names
 ==============================
-To be done
+Please refer to https://github.com/foss-for-synopsys-dwc-arc-processors/meta-synopsys/tree/morty/conf/machine
 
 Sources
 =======
