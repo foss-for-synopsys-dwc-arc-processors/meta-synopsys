@@ -1,15 +1,14 @@
 #
-# uclibc specific configuration
+# glibc specific configuration
 #
 
-LIBCEXTENSION = "-uclibc"
+#LIBCEXTENSION = "-glibc"
 
-# Add uclibc overrides to the overrides.
-LIBCOVERRIDE = ":libc-uclibc"
-OVERRIDES .= "${LIBCOVERRIDE}"
+#LIBCOVERRIDE = ":libc-glibc"
+#OVERRIDES .= "${LIBCOVERRIDE}"
 
-PREFERRED_PROVIDER_virtual/libc ?= "uclibc"
-PREFERRED_PROVIDER_virtual/libiconv ?= "uclibc"
+PREFERRED_PROVIDER_virtual/libc ?= "glibc"
+PREFERRED_PROVIDER_virtual/libiconv ?= "glibc"
 PREFERRED_PROVIDER_virtual/libintl ?= "gettext"
 PREFERRED_PROVIDER_virtual/nativesdk-libintl ?= "nativesdk-glibc"
 PREFERRED_PROVIDER_virtual/nativesdk-libiconv ?= "nativesdk-glibc"
@@ -21,8 +20,8 @@ CXXFLAGS += "-fvisibility-inlines-hidden"
 IMAGE_LINGUAS = ""
 
 LIBC_DEPENDENCIES = "\
-    uclibc \
-    uclibc-dbg \
-    uclibc-dev \
-    uclibc-thread-db \
+    glibc \
+    glibc-dbg \
+    glibc-dev \
+    glibc-thread-db \
     "
