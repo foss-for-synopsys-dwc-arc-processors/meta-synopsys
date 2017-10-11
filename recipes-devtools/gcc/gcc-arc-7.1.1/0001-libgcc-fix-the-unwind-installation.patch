@@ -1,0 +1,26 @@
+From ddab46e65f451ac6da69c5d87dfdc812085d9a23 Mon Sep 17 00:00:00 2001
+From: Antoine Tenart <antoine.tenart@ack.tf>
+Date: Wed, 11 Oct 2017 15:14:34 +0200
+Subject: [PATCH] libgcc: fix the unwind installation
+
+Signed-off-by: Antoine Tenart <antoine.tenart@ack.tf>
+---
+ libgcc/Makefile.in | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/libgcc/Makefile.in b/libgcc/Makefile.in
+index a1a392de88d0..28244a3b3052 100644
+--- a/libgcc/Makefile.in
++++ b/libgcc/Makefile.in
+@@ -1108,7 +1108,7 @@ install-unwind_h-forbuild: unwind.h
+ #
+ # This is however useful for "install-no-fixincludes" case, when only the gcc
+ # internal headers are copied by gcc's install.
+-install-unwind_h:
++install-unwind_h: unwind.h
+ 	$(mkinstalldirs) $(DESTDIR)$(libsubdir)/include
+ 	$(INSTALL_DATA) unwind.h $(DESTDIR)$(libsubdir)/include
+ 
+-- 
+2.13.6
+

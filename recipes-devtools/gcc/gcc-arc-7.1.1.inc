@@ -1,14 +1,14 @@
 require recipes-devtools/gcc/gcc-common.inc
 
-GCC_TAG = "arc-2017.03-rc2"
-SRC_URI[sha256sum] = "dcf2219133448321d9bcdff4513f3283c8f47ee7baa77eeb567252c8279b1813"
+GCC_TAG = "arc-2017.09-eng010"
+SRC_URI[sha256sum] = "a634e71eeafe2517af72842d730d5d0ad592b2acf6042c55e9a128cd41a81d7a"
 SRC_URI = "\
 	https://github.com/foss-for-synopsys-dwc-arc-processors/gcc/archive/${GCC_TAG}.tar.gz;downloadfilename=gcc-${PV}.tar.gz \
-	file://0014-optional-libstdc.patch \
+	file://0001-libgcc-fix-the-unwind-installation.patch \
 	file://0032-gcc-4.8-won-t-build-with-disable-dependency-tracking.patch \
 "
 
-BINV = "6.3.0"
+BINV = "7.1.1"
 
 S = "${TMPDIR}/work-shared/gcc-${PV}-${PR}/gcc-${GCC_TAG}"
 B = "${WORKDIR}/git/build.${HOST_SYS}.${TARGET_SYS}"
@@ -39,7 +39,6 @@ EXTRA_OECONF_BASE = "\
 	--disable-bootstrap \
 	--disable-libmudflap \
 	--with-system-zlib \
-	--with-linker-hash-style=${LINKER_HASH_STYLE} \
 	--enable-linker-build-id \
 	--with-ppl=no \
 	--with-cloog=no \
