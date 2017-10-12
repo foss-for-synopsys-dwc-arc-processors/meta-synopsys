@@ -1,20 +1,12 @@
-BINUTILS_TAG = "arc-2017.03-rc2"
-SRC_URI[sha256sum] = "09535f0dea6829a45323e91393ea8484afde9cf578c80e9b5cc96fc0e63d6cf7"
+BINUTILS_TAG = "arc-2017.09-eng010"
+SRC_URI[sha256sum] = "d57b2f07dda6327b333ac72e4568b3aa71fd9805ea4b02fac47a259d51b432a9"
 SRC_URI = "\
 	https://github.com/foss-for-synopsys-dwc-arc-processors/binutils-gdb/archive/${BINUTILS_TAG}.tar.gz;downloadfilename=binutils-${PV}.tar.gz \
-	file://0003-gprof-add-uclibc-support-to-configure.patch \
 	file://0004-Point-scripts-location-to-libdir.patch \
-	file://0006-Explicitly-link-with-libm-on-uclibc.patch \
-	file://0007-Use-libtool-2.4.patch \
 	file://0008-Add-the-armv5e-architecture-to-binutils.patch \
 	file://0009-don-t-let-the-distro-compiler-point-to-the-wrong-ins.patch \
-	file://0010-warn-for-uses-of-system-directories-when-cross-linki.patch \
-	file://0011-Fix-rpath-in-libtool-when-sysroot-is-enabled.patch \
 	file://0012-Change-default-emulation-for-mips64-linux.patch \
-	file://0013-Add-support-for-Netlogic-XLP.patch \
 	file://0014-fix-the-incorrect-assembling-for-ppc-wait-mnemonic.patch \
-	file://0015-sync-with-OE-libtool-changes.patch \
-	file://0016-Put-soname-in-the-version-definition-section.patch \
 "
 
 S = "${WORKDIR}/binutils-gdb-${BINUTILS_TAG}"
