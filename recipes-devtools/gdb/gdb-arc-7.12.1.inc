@@ -1,8 +1,7 @@
-GDB_TAG = "arc-2017.03-rc2-gdb"
-SRC_URI[sha256sum] = "674a8c0abcca247ce996c9c68c0631cfb49ca27c17e40cc677a733f5c677c13f"
+GDB_TAG = "arc-2017.09-eng010-gdb"
+SRC_URI[sha256sum] = "6368bbe910838355e281441d950a97014384a101290d846112576e176161d0ec"
 SRC_URI = " \
 	https://github.com/foss-for-synopsys-dwc-arc-processors/binutils-gdb/archive/${GDB_TAG}.tar.gz;downloadfilename=gdb-${PV}.tar.gz \
-	file://0001-include-sys-types.h-for-mode_t.patch \
 	file://0002-make-man-install-relative-to-DESTDIR.patch \
 	file://0003-mips-linux-nat-Define-_ABIO32-if-not-defined.patch \
 	file://0004-ppc-ptrace-Define-pt_regs-uapi_pt_regs-on-GLIBC-syst.patch \
