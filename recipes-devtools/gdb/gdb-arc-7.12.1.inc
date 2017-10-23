@@ -1,5 +1,5 @@
-GDB_TAG = "arc-2017.09-eng010-gdb"
-SRC_URI[sha256sum] = "6368bbe910838355e281441d950a97014384a101290d846112576e176161d0ec"
+GDB_TAG = "arc-2017.09-release-gdb"
+SRC_URI[sha256sum] = "02e0b3ba623500dda9d729d2342bf0b5b75aafe232ce271baa4342b8884cb0b2"
 SRC_URI = " \
 	https://github.com/foss-for-synopsys-dwc-arc-processors/binutils-gdb/archive/${GDB_TAG}.tar.gz;downloadfilename=gdb-${PV}.tar.gz \
 	file://0002-make-man-install-relative-to-DESTDIR.patch \
