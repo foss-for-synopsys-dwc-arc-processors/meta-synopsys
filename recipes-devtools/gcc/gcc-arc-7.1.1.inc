@@ -1,7 +1,7 @@
 require recipes-devtools/gcc/gcc-common.inc
 
-GCC_TAG = "arc-2017.09-eng010"
-SRC_URI[sha256sum] = "a634e71eeafe2517af72842d730d5d0ad592b2acf6042c55e9a128cd41a81d7a"
+GCC_TAG = "arc-2017.09-release"
+SRC_URI[sha256sum] = "09a745a6605d24e1d861241e1130edb0f3fa13d415c51f3dc6038d0c7650836d"
 SRC_URI = "\
 	https://github.com/foss-for-synopsys-dwc-arc-processors/gcc/archive/${GCC_TAG}.tar.gz;downloadfilename=gcc-${PV}.tar.gz \
 	file://0001-libgcc-fix-the-unwind-installation.patch \
