@@ -8,8 +8,8 @@ LIC_FILES_CHKSUM = "file://LICENSES;md5=e9a558e243b36d3209f380deb394b213 \
 
 DEPENDS += "gperf-native"
 
-RELEASE = "2017.09-eng010"
-SRC_URI[sha256sum] = "adf2dd19a76705a6fb748492eba30cb0be621422190116382a891a3cf099e895"
+RELEASE = "2017.09-release"
+SRC_URI[sha256sum] = "5aa9adeac09727db0b8a52794186563771e74d70410e9fd86431e339953fd4bb"
 SRC_URI = "https://github.com/foss-for-synopsys-dwc-arc-processors/glibc/archive/arc-${RELEASE}.tar.gz \
            file://etc/ld.so.conf \
            file://generate-supported.mk \
