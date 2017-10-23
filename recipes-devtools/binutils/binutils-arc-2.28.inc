@@ -1,5 +1,5 @@
-BINUTILS_TAG = "arc-2017.09-eng010"
-SRC_URI[sha256sum] = "d57b2f07dda6327b333ac72e4568b3aa71fd9805ea4b02fac47a259d51b432a9"
+BINUTILS_TAG = "arc-2017.09-release"
+SRC_URI[sha256sum] = "b10f92aba51fd394e575715ee9dfae166629eaaccd0c6ed5689dd83582134d16"
 SRC_URI = "\
 	https://github.com/foss-for-synopsys-dwc-arc-processors/binutils-gdb/archive/${BINUTILS_TAG}.tar.gz;downloadfilename=binutils-${PV}.tar.gz \
 	file://0004-Point-scripts-location-to-libdir.patch \
