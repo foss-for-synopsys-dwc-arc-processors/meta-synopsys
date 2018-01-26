@@ -11,6 +11,7 @@ S = "${WORKDIR}/linux-${PV}"
 DEPENDS += " libgcc"
 KERNEL_CC_append = " ${TOOLCHAIN_OPTIONS}"
 
+KERNEL_DEFCONFIG_hsdk = "hsdk"
 KERNEL_DEFCONFIG_nsimhs = "nsim_hs"
 KERNEL_CONFIG_COMMAND = "oe_runmake -C ${S} O=${B} ${KERNEL_DEFCONFIG}_defconfig"
 
