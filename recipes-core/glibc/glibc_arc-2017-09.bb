@@ -1,5 +1,12 @@
 require recipes-core/glibc/glibc.inc
 
+INSANE_SKIP_${PN} = "file-rdeps"
+INSANE_SKIP_${PN}-dev = "file-rdeps"
+INSANE_SKIP_nscd = "file-rdeps"
+INSANE_SKIP_tzcode = "file-rdeps"
+
+
+
 LIC_FILES_CHKSUM = "file://LICENSES;md5=e9a558e243b36d3209f380deb394b213 \
 		    file://COPYING;md5=b234ee4d69f5fce4486a80fdaf4a4263 \
 		    file://posix/rxspencer/COPYRIGHT;md5=dc5485bb394a13b2332ec1c785f5d83a \
@@ -110,3 +117,4 @@ do_compile_prepend_class-nativesdk() {
 require recipes-core/glibc/glibc-package.inc
 
 BBCLASSEXTEND = "nativesdk"
+
