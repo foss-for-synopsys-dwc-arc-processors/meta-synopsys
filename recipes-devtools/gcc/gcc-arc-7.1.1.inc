@@ -6,6 +6,7 @@ SRC_URI = "\
 	https://github.com/foss-for-synopsys-dwc-arc-processors/gcc/archive/${GCC_TAG}.tar.gz;downloadfilename=gcc-${PV}.tar.gz \
 	file://0001-libgcc-fix-the-unwind-installation.patch \
 	file://0032-gcc-4.8-won-t-build-with-disable-dependency-tracking.patch \
+	file://0014-optional-libstdc.patch \
 "
 
 BINV = "7.1.1"

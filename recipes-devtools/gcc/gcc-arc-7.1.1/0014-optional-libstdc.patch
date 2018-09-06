@@ -1,7 +1,7 @@
-From 36275f7981bdaf919bbc9b51a7c7fae1e192adb3 Mon Sep 17 00:00:00 2001
+From 26a58d05844274915d011edbf9330c6151687b22 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Fri, 29 Mar 2013 09:12:56 +0400
-Subject: [PATCH 14/46] optional libstdc
+Subject: [PATCH 13/47] optional libstdc
 
 gcc-runtime builds libstdc++ separately from gcc-cross-*. Its configure tests using g++
 will not run correctly since by default the linker will try to link against libstdc++
@@ -25,10 +25,10 @@ Upstream-Status: Inappropriate [embedded specific]
  4 files changed, 37 insertions(+), 1 deletion(-)
 
 diff --git a/gcc/c-family/c.opt b/gcc/c-family/c.opt
-index 4f86876..660da6c 100644
+index 9ad2f6e1fcc..c4ef7796282 100644
 --- a/gcc/c-family/c.opt
 +++ b/gcc/c-family/c.opt
-@@ -1647,6 +1647,10 @@ nostdinc++
+@@ -1848,6 +1848,10 @@ nostdinc++
  C++ ObjC++
  Do not search standard system include directories for C++.
  
@@ -40,7 +40,7 @@ index 4f86876..660da6c 100644
  C ObjC C++ ObjC++ Joined Separate
  ; Documented in common.opt
 diff --git a/gcc/cp/g++spec.c b/gcc/cp/g++spec.c
-index 03cbde0..3642540 100644
+index ffcc87c79c9..28d8a9cf530 100644
 --- a/gcc/cp/g++spec.c
 +++ b/gcc/cp/g++spec.c
 @@ -137,6 +137,7 @@ lang_specific_driver (struct cl_decoded_option **in_decoded_options,
@@ -52,10 +52,10 @@ index 03cbde0..3642540 100644
  	  library = -1;
  	  break;
 diff --git a/gcc/doc/invoke.texi b/gcc/doc/invoke.texi
-index 8bb49e7..84d68aa 100644
+index 060cd7169c6..8e2adc25644 100644
 --- a/gcc/doc/invoke.texi
 +++ b/gcc/doc/invoke.texi
-@@ -207,6 +207,9 @@ in the following sections.
+@@ -211,6 +211,9 @@ in the following sections.
  -fno-weak  -nostdinc++ @gol
  -fvisibility-inlines-hidden @gol
  -fvisibility-ms-compat @gol
@@ -64,17 +64,17 @@ index 8bb49e7..84d68aa 100644
 +-nostdlib++ @gol
  -fext-numeric-literals @gol
  -Wabi=@var{n}  -Wabi-tag  -Wconversion-null  -Wctor-dtor-privacy @gol
- -Wdelete-non-virtual-dtor -Wliteral-suffix -Wmultiple-inheritance @gol
-@@ -470,7 +473,7 @@ Objective-C and Objective-C++ Dialects}.
- -s  -static -static-libgcc -static-libstdc++ @gol
- -static-libasan -static-libtsan -static-liblsan -static-libubsan @gol
- -static-libmpx -static-libmpxwrappers @gol
---shared -shared-libgcc  -symbolic @gol
-+-shared -shared-libgcc  -symbolic -nostdlib++ @gol
+ -Wdelete-non-virtual-dtor  -Wliteral-suffix  -Wmultiple-inheritance @gol
+@@ -496,7 +499,7 @@ Objective-C and Objective-C++ Dialects}.
+ -s  -static  -static-libgcc  -static-libstdc++ @gol
+ -static-libasan  -static-libtsan  -static-liblsan  -static-libubsan @gol
+ -static-libmpx  -static-libmpxwrappers @gol
+--shared  -shared-libgcc  -symbolic @gol
++-shared  -shared-libgcc  -symbolic -nostdlib++ @gol
  -T @var{script}  -Wl,@var{option}  -Xlinker @var{option} @gol
- -u @var{symbol} -z @var{keyword}}
+ -u @var{symbol}  -z @var{keyword}}
  
-@@ -10601,6 +10604,33 @@ library subroutines.
+@@ -11606,6 +11609,33 @@ library subroutines.
  constructors are called; @pxref{Collect2,,@code{collect2}, gccint,
  GNU Compiler Collection (GCC) Internals}.)
  
@@ -109,10 +109,10 @@ index 8bb49e7..84d68aa 100644
  @opindex pie
  Produce a position independent executable on targets that support it.
 diff --git a/gcc/gcc.c b/gcc/gcc.c
-index 4cfef7f..da0b482 100644
+index 6315aa0dd16..a5fafbe5107 100644
 --- a/gcc/gcc.c
 +++ b/gcc/gcc.c
-@@ -1028,6 +1028,7 @@ proper position among the other output files.  */
+@@ -1046,6 +1046,7 @@ proper position among the other output files.  */
      %(mflib) " STACK_SPLIT_SPEC "\
      %{fprofile-arcs|fprofile-generate*|coverage:-lgcov} " SANITIZER_SPEC " \
      %{!nostdlib:%{!nodefaultlibs:%(link_ssp) %(link_gcc_c_sequence)}}\
@@ -121,5 +121,5 @@ index 4cfef7f..da0b482 100644
  #endif
  
 -- 
-2.8.2
+2.12.2
 
