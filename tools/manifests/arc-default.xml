@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<manifest>
+  <remote name="openembedded" fetch="https://github.com/openembedded/" />
+  <remote name="synopsys" fetch="https://github.com/foss-for-synopsys-dwc-arc-processors/" />
+  <remote name="yocto" fetch="git://git.yoctoproject.org/" />
+  <default remote="openembedded" revision="master" />
+
+  <project name="meta-openembedded" remote="openembedded" revision="master" />
+  <project name="poky" remote="yocto" revision="master" />
+  <project name="meta-synopsys" remote="synopsys" revision="master" />
+</manifest>
