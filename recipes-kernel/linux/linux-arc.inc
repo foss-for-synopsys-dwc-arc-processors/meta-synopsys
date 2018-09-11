@@ -18,7 +18,3 @@ KERNEL_CONFIG_COMMAND = "oe_runmake -C ${S} O=${B} ${KERNEL_DEFCONFIG}_defconfig
 KERNEL_IMAGETYPE = "vmlinux"
 KERNEL_OUTPUT_DIR = "."
 KERNEL_CLASSES = ""
-
-do_configure_append() {
-	echo 'CONFIG_INITRAMFS_SOURCE=""' >> ${B}/.config
-}
