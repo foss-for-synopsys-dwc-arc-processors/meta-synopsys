@@ -1,11 +1,8 @@
-TUNEVALID[littleendian] = "Enable little-endian mode"
 TUNEVALID[bigendian] = "Enable big-endian mode"
 
-TUNE_ARCH = "arc${ARC_ENDIAN}"
-TUNE_PKGARCH = "arc${ARC_ENDIAN}"
-TUNE_FEATURES = "arc"
+TUNE_ARCH = "${@bb.utils.contains('TUNE_FEATURES', 'bigendian', 'arceb', 'arc', d)}"
 
-PACKAGE_EXTRA_ARCHS = "arc${ARC_ENDIAN}"
+MACHINE_FEATURES_remove = "qemu-usermode"
 
-ARC_ENDIAN = "${@bb.utils.contains('TUNE_FEATURES', 'bigendian', 'eb', '', d)}"
-
+PREFERRED_PROVIDER_virtual/kernel = "linux-arc"
+PREFERRED_VERSION_linux-arc ?= "4.18%"
