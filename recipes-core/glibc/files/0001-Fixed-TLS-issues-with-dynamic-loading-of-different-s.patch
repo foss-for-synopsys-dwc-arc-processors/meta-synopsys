@@ -1,0 +1,28 @@
+From a391a04c391ae045877499a20e6e16a2a9998821 Mon Sep 17 00:00:00 2001
+From: Cupertino Miranda <cmiranda@synopsys.com>
+Date: Thu, 6 Sep 2018 00:44:42 +0100
+Subject: [PATCH] Fixed TLS issues with dynamic loading, of different sections.
+
+Offset set by the linker in the GOT entries would be overwritten by the dynamic
+loader instead of added to the symbol location.
+Other target have the same approach on DTSOFF relocs.
+---
+ sysdeps/arc/dl-machine.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/sysdeps/arc/dl-machine.h b/sysdeps/arc/dl-machine.h
+index 02727a3..f475790 100644
+--- a/sysdeps/arc/dl-machine.h
++++ b/sysdeps/arc/dl-machine.h
+@@ -290,7 +290,7 @@ elf_machine_rela (struct link_map *map, const ElfW(Rela) *reloc,
+         case R_ARC_TLS_DTPOFF:
+           if (sym != NULL)
+             {
+-              *reloc_addr = sym->st_value;
++              *reloc_addr += sym->st_value;
+             }
+           break;
+ 
+-- 
+2.9.0
+

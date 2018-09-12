@@ -1,5 +1,5 @@
-BINUTILS_TAG = "arc-2017.09-release"
-SRC_URI[sha256sum] = "2ea086fd5521e942926dd6ff6922ce31c29ee7ffc754fca3d06385e0f27600f8"
+BINUTILS_TAG = "arc-2018.03-release"
+SRC_URI[sha256sum] = "c59c2794336e92c3bfa6367ff9a38e933d901e41a1fdacda95c220b2055d1d11"
 SRC_URI = "\
 	https://github.com/foss-for-synopsys-dwc-arc-processors/binutils-gdb/archive/${BINUTILS_TAG}.tar.gz;downloadfilename=binutils-${PV}.tar.gz \
 	file://0004-Point-scripts-location-to-libdir.patch \
@@ -7,6 +7,8 @@ SRC_URI = "\
 	file://0009-don-t-let-the-distro-compiler-point-to-the-wrong-ins.patch \
 	file://0012-Change-default-emulation-for-mips64-linux.patch \
 	file://0014-fix-the-incorrect-assembling-for-ppc-wait-mnemonic.patch \
+        file://0001-Fixed-issue-with-DTSOFF-relocs-in-GOT.patch \
+        file://0001-Fix-for-DTPOFF-linker-relocation.patch \
 "
 
 S = "${WORKDIR}/binutils-gdb-${BINUTILS_TAG}"

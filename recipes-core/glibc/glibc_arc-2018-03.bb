@@ -15,8 +15,8 @@ LIC_FILES_CHKSUM = "file://LICENSES;md5=e9a558e243b36d3209f380deb394b213 \
 
 DEPENDS += "gperf-native"
 
-RELEASE = "2017.09-release"
-SRC_URI[sha256sum] = "5aa9adeac09727db0b8a52794186563771e74d70410e9fd86431e339953fd4bb"
+RELEASE = "2018.03-release"
+SRC_URI[sha256sum] = "e08ab67b2db2d0f0e8f3311d23c54fb8f6d4c1ef6fa0b4047fd5da400e3ce9de"
 SRC_URI = "https://github.com/foss-for-synopsys-dwc-arc-processors/glibc/archive/arc-${RELEASE}.tar.gz \
            file://etc/ld.so.conf \
            file://generate-supported.mk \
@@ -29,6 +29,7 @@ NATIVESDKFIXES_class-nativesdk = "\
            file://0002-nativesdk-glibc-Fix-buffer-overrun-with-a-relocated-.patch \
            file://0003-nativesdk-glibc-Raise-the-size-of-arrays-containing-.patch \
            file://0004-nativesdk-glibc-Allow-64-bit-atomics-for-x86.patch \
+           file://0001-Fixed-TLS-issues-with-dynamic-loading-of-different-s.patch \
 "
 
 S = "${WORKDIR}/glibc-arc-${RELEASE}"
