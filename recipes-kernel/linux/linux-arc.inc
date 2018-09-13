@@ -5,7 +5,11 @@ LICENSE = "GPLv2"
 
 inherit kernel
 
-SRC_URI = "https://www.kernel.org/pub/linux/kernel/v4.x/linux-${PV}.tar.xz"
+SRC_URI = "\
+    https://www.kernel.org/pub/linux/kernel/v4.x/linux-${PV}.tar.xz\
+    file://0001-ARC-Get-rid-of-toolchain-check.patch\
+    "
+
 S = "${WORKDIR}/linux-${PV}"
 
 DEPENDS += " libgcc"
