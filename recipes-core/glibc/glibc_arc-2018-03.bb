@@ -20,6 +20,7 @@ SRC_URI[sha256sum] = "e08ab67b2db2d0f0e8f3311d23c54fb8f6d4c1ef6fa0b4047fd5da400e
 SRC_URI = "https://github.com/foss-for-synopsys-dwc-arc-processors/glibc/archive/arc-${RELEASE}.tar.gz \
            file://etc/ld.so.conf \
            file://generate-supported.mk \
+           file://0001-Fixed-TLS-issues-with-dynamic-loading-of-different-s.patch \
 	   ${NATIVESDKFIXES} \
 "
 
@@ -29,7 +30,6 @@ NATIVESDKFIXES_class-nativesdk = "\
            file://0002-nativesdk-glibc-Fix-buffer-overrun-with-a-relocated-.patch \
            file://0003-nativesdk-glibc-Raise-the-size-of-arrays-containing-.patch \
            file://0004-nativesdk-glibc-Allow-64-bit-atomics-for-x86.patch \
-           file://0001-Fixed-TLS-issues-with-dynamic-loading-of-different-s.patch \
 "
 
 S = "${WORKDIR}/glibc-arc-${RELEASE}"
