@@ -1,0 +1,39 @@
+From 9f14ab34c27b99848d558576e365503eebe3882c Mon Sep 17 00:00:00 2001
+From: Alexey Brodkin <abrodkin@synopsys.com>
+Date: Fri, 21 Sep 2018 00:11:57 +0300
+Subject: [PATCH] mesonbuild: Recognise ARC architecture
+
+-------------------------->8-----------------------
+root@nsimhs:~# python
+
+Python 2.7.15 (default, Sep 20 2018, 21:44:15)
+[GCC 8.2.0] on linux2
+Type "help", "copyright", "credits" or "license" for more information.
+>>>
+>>> import platform
+>>> print platform.machine()
+arc
+-------------------------->8-----------------------
+
+Signed-off-by: Alexey Brodkin <abrodkin@synopsys.com>
+
+Upstream-satus: Submitted [https://github.com/mesonbuild/meson/pull/4234]
+---
+ mesonbuild/environment.py         | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/mesonbuild/environment.py b/mesonbuild/environment.py
+index d29a77f0e019..13354c720269 100644
+--- a/mesonbuild/environment.py
++++ b/mesonbuild/environment.py
+@@ -76,6 +76,7 @@ build_filename = 'meson.build'
+ 
+ known_cpu_families = (
+     'aarch64',
++    'arc',
+     'arm',
+     'e2k',
+     'ia64',
+-- 
+2.17.1
+
