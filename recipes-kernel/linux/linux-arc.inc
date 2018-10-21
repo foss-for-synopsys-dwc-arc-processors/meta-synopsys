@@ -7,7 +7,6 @@ inherit kernel
 
 SRC_URI = "\
     https://www.kernel.org/pub/linux/kernel/v4.x/linux-${PV}.tar.xz\
-    file://0001-ARC-Get-rid-of-toolchain-check.patch\
     file://0009-UDL-add-pseudo-deferred-io-for-modeset-drive.patch \
     file://0010-UDL-defio-add-fb-lock-and-required-checks.patch \
     "
