@@ -1,0 +1,25 @@
+From 127ad211b886c5ea7902026162b5c55262f62d9d Mon Sep 17 00:00:00 2001
+From: Evgeniy Didin <Evgeniy.Didin@synopsys.com>
+Date: Thu, 12 Apr 2018 16:54:55 +0300
+Subject: [PATCH] Fix Double-Conversion unsupported error for ARC
+
+---
+ mfbt/double-conversion/utils.h | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/mfbt/double-conversion/utils.h b/mfbt/double-conversion/utils.h
+index fe26dab..94bf26c 100644
+--- a/mfbt/double-conversion/utils.h
++++ b/mfbt/double-conversion/utils.h
+@@ -61,6 +61,8 @@
+     defined(__aarch64__) || \
+     defined(_MIPS_ARCH_MIPS32R2)
+ #define DOUBLE_CONVERSION_CORRECT_DOUBLE_OPERATIONS 1
++#elif defined(__arc__)
++#undef DOUBLE_CONVERSION_CORRECT_DOUBLE_OPERATIONS
+ #elif defined(_M_IX86) || defined(__i386__) || defined(__i386)
+ #if defined(_WIN32)
+ // Windows uses a 64bit wide floating point stack.
+-- 
+2.16.2
+

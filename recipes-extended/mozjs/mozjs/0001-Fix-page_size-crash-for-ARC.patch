@@ -1,0 +1,26 @@
+From 62dbf644dddb8e7370f0f69bbfc01ad552dfedd7 Mon Sep 17 00:00:00 2001
+From: Evgeniy Didin <Evgeniy.Didin@synopsys.com>
+Date: Tue, 2 Oct 2018 16:54:09 +0300
+Subject: [PATCH] [mozjs]Fix page_size crash for ARC
+
+Signed-off-by: Evgeniy Didin <Evgeniy.Didin@synopsys.com>
+---
+ js/src/gc/Heap.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/js/src/gc/Heap.h b/js/src/gc/Heap.h
+index f4dbcda..d131dfa 100644
+--- a/js/src/gc/Heap.h
++++ b/js/src/gc/Heap.h
+@@ -110,7 +110,7 @@ struct Cell
+  * Bug 692267: Move page size definition to gc/Memory.h and include it
+  *             directly once jsgc.h is no longer an installed header.
+  */
+-#if defined(SOLARIS) && (defined(__sparc) || defined(__sparcv9))
++#if defined(SOLARIS) && (defined(__sparc) || defined(__sparcv9)) || defined(__arc__)
+ const size_t PageShift = 13;
+ const size_t ArenaShift = PageShift;
+ #elif defined(__powerpc__) || defined(__aarch64__)
+-- 
+2.16.2
+
