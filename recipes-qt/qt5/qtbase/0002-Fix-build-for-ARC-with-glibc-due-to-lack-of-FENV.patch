@@ -1,0 +1,54 @@
+From df82a73fd8e65678cfe281e5c2e330aa61d22806 Mon Sep 17 00:00:00 2001
+From: Evgeniy Didin <Evgeniy.Didin@synopsys.com>
+Date: Tue, 23 Oct 2018 17:11:32 +0300
+Subject: [PATCH 2/2] Disable fenv.h for ARC with glibc
+
+Signed-off-by: Evgeniy Didin <Evgeniy.Didin@synopsys.com>
+---
+ src/corelib/tools/qlocale_tools.cpp               | 2 +-
+ tests/auto/corelib/tools/qlocale/tst_qlocale.cpp  | 2 +-
+ tests/auto/gui/painting/qpainter/tst_qpainter.cpp | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/src/corelib/tools/qlocale_tools.cpp b/src/corelib/tools/qlocale_tools.cpp
+index 3e4f37501e..33e804d2d4 100644
+--- a/src/corelib/tools/qlocale_tools.cpp
++++ b/src/corelib/tools/qlocale_tools.cpp
+@@ -53,7 +53,7 @@
+ #include <stdlib.h>
+ #include <time.h>
+ 
+-#if defined(Q_OS_LINUX) && !defined(__UCLIBC__)
++#if defined(Q_OS_LINUX) && !defined(__UCLIBC__) && !defined(__arc__)
+ #    include <fenv.h>
+ #endif
+ 
+diff --git a/tests/auto/corelib/tools/qlocale/tst_qlocale.cpp b/tests/auto/corelib/tools/qlocale/tst_qlocale.cpp
+index a59f358f80..b9f80cdc4a 100644
+--- a/tests/auto/corelib/tools/qlocale/tst_qlocale.cpp
++++ b/tests/auto/corelib/tools/qlocale/tst_qlocale.cpp
+@@ -46,7 +46,7 @@
+ #include <private/qlocale_tools_p.h>
+ #include <qnumeric.h>
+ 
+-#if defined(Q_OS_LINUX) && defined(__GLIBC__)
++#if defined(Q_OS_LINUX) && defined(__GLIBC__) && !defined(__arc__)
+ #    define QT_USE_FENV
+ #endif
+ 
+diff --git a/tests/auto/gui/painting/qpainter/tst_qpainter.cpp b/tests/auto/gui/painting/qpainter/tst_qpainter.cpp
+index 6b6869c2ba..dabcb69d72 100644
+--- a/tests/auto/gui/painting/qpainter/tst_qpainter.cpp
++++ b/tests/auto/gui/painting/qpainter/tst_qpainter.cpp
+@@ -2871,7 +2871,7 @@ void tst_QPainter::monoImages()
+     }
+ }
+ 
+-#if !defined(Q_OS_IRIX) && !defined(Q_OS_AIX) && !defined(Q_CC_MSVC) && !defined(Q_OS_SOLARIS) && !defined(__UCLIBC__)
++#if !defined(Q_OS_IRIX) && !defined(Q_OS_AIX) && !defined(Q_CC_MSVC) && !defined(Q_OS_SOLARIS) && !defined(__UCLIBC__) && !defined(__arc__)
+ #include <fenv.h>
+ 
+ static const QString fpeExceptionString(int exception)
+-- 
+2.16.2
+
