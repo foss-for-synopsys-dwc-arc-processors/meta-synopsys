@@ -7,8 +7,8 @@ SRC_URI = "\
 	file://0009-don-t-let-the-distro-compiler-point-to-the-wrong-ins.patch \
 	file://0012-Change-default-emulation-for-mips64-linux.patch \
 	file://0014-fix-the-incorrect-assembling-for-ppc-wait-mnemonic.patch \
-        file://0001-Fixed-issue-with-DTSOFF-relocs-in-GOT.patch \
-        file://0001-Fix-for-DTPOFF-linker-relocation.patch \
+	file://0001-Fix-for-DTPOFF-linker-relocation.patch \
+	file://0001-Fixed-issue-with-DTSOFF-relocs-in-GOT.patch \
 "
 
 S = "${WORKDIR}/binutils-gdb-${BINUTILS_TAG}"

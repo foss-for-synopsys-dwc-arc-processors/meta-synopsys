@@ -10,6 +10,7 @@ SRC_URI = "\
 "
 
 BINV = "7.3.1"
+TARGET_CFLAGS += "-Os"
 
 S = "${TMPDIR}/work-shared/gcc-${PV}-${PR}/gcc-${GCC_TAG}"
 B = "${WORKDIR}/git/build.${HOST_SYS}.${TARGET_SYS}"
