@@ -1,0 +1,26 @@
+From ec7889d936c2150b76ab1f350fe291fc8064dea3 Mon Sep 17 00:00:00 2001
+From: Evgeniy Didin <Evgeniy.Didin@synopsys.com>
+Date: Thu, 25 Oct 2018 09:45:20 +0300
+Subject: [PATCH] Disable optimizations for security keys ARC(tls toolchain
+ issues)
+
+Signed-off-by: Evgeniy Didin <Evgeniy.Didin@synopsys.com>
+---
+ security/keys/Makefile | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/security/keys/Makefile b/security/keys/Makefile
+index ef1581b337a3..804a4b062c77 100644
+--- a/security/keys/Makefile
++++ b/security/keys/Makefile
+@@ -22,6 +22,7 @@ obj-$(CONFIG_PROC_FS) += proc.o
+ obj-$(CONFIG_SYSCTL) += sysctl.o
+ obj-$(CONFIG_PERSISTENT_KEYRINGS) += persistent.o
+ obj-$(CONFIG_KEY_DH_OPERATIONS) += dh.o
++CFLAGS_process_keys.o += -O0
+ 
+ #
+ # Key types
+-- 
+2.16.2
+
