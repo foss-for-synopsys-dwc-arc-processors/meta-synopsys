@@ -1,3 +1,16 @@
+glibc: Update to arc-2018.09-rc2 tag
+
+This was generated from Synopsys GitHub Glibc WIP fork [1] this way:
+----------------->8-----------------
+git diff glibc-2.28..arc-2018.09-rc2 ':!NEWS'
+----------------->8-----------------
+
+[1] https://github.com/foss-for-synopsys-dwc-arc-processors/glibc
+
+Signed-off-by: Alexey Brodkin <abrodkin@synopsys.com>
+
+Upstream-Status: Pending
+---
 diff --git a/elf/elf.h b/elf/elf.h
 index 7e2b072a7f75..5b0b20d58934 100644
 --- a/elf/elf.h
@@ -86,6 +99,18 @@ index 7e2b072a7f75..5b0b20d58934 100644
  __END_DECLS
  
  #endif	/* elf.h */
+diff --git a/posix/tst-getaddrinfo4.c b/posix/tst-getaddrinfo4.c
+index dc9e423448af..0139dee777a1 100644
+--- a/posix/tst-getaddrinfo4.c
++++ b/posix/tst-getaddrinfo4.c
+@@ -39,6 +39,7 @@ try (const char *service, int family, int flags)
+     case 0:
+     case EAI_AGAIN:
+     case EAI_NONAME:
++    case EAI_NODATA:
+       printf ("SUCCESS getaddrinfo(service=%s, family=%d, flags=%d): %s: %m\n",
+               service ?: "NULL", family, flags, gai_strerror (res));
+       return 0;
 diff --git a/scripts/build-many-glibcs.py b/scripts/build-many-glibcs.py
 index 8ef463f57ad6..07171a7ad7b7 100755
 --- a/scripts/build-many-glibcs.py
@@ -2032,10 +2057,10 @@ index 000000000000..8c4fba4f9ae0
 +ARC
 diff --git a/sysdeps/arc/machine-gmon.h b/sysdeps/arc/machine-gmon.h
 new file mode 100644
-index 000000000000..8f5e6aa1439c
+index 000000000000..55facf77a858
 --- /dev/null
 +++ b/sysdeps/arc/machine-gmon.h
-@@ -0,0 +1,31 @@
+@@ -0,0 +1,33 @@
 +/* Machine-dependent definitions for profiling support.  ARC version.
 +   Copyright (C) 1996-2018 Free Software Foundation, Inc.
 +   This file is part of the GNU C Library.
@@ -2057,16 +2082,18 @@ index 000000000000..8f5e6aa1439c
 +#include <sysdep.h>
 +
 +#define _MCOUNT_DECL(frompc, selfpc)
-+static void __attribute_used__ __mcount_internal (u_long frompc, u_long selfpc)
++static void __mcount_internal (unsigned long frompc, unsigned long selfpc)
 +
-+/* mcount is not really supported, there are better tools now */
-+#define MCOUNT						\
-+  asm (".globl __mcount\n\t"				\
-+       ".type __mcount,@function\n\t"			\
-+       "__mcount:\n\t"					\
-+       "flag 1	\n\t"					\
-+       ".size __mcount, . - __mcount\n\t"		\
-+       );
++/* this is very simple as gcc does all the heavy lifting at _mcount call site
++ *  - sets up caller's blink in r0, so frompc is setup correctly
++ *  - preserve argument registers for original call */
++
++#define MCOUNT								\
++void _mcount (void *frompc)						\
++{									\
++  __mcount_internal ((unsigned long int) frompc,				\
++		   (unsigned long int) __builtin_return_address(0));	\
++}
 diff --git a/sysdeps/arc/math-tests.h b/sysdeps/arc/math-tests.h
 new file mode 100644
 index 000000000000..2fe08698ff49
@@ -2297,36 +2324,6 @@ index 000000000000..9617354dc7e3
 +#define __PTHREAD_MUTEX_SPINS_OFFSET    20
 +#define __PTHREAD_MUTEX_ELISION_OFFSET  22
 +#define __PTHREAD_MUTEX_LIST_OFFSET     20
-diff --git a/sysdeps/arc/nptl/pthread_spin_lock.c b/sysdeps/arc/nptl/pthread_spin_lock.c
-new file mode 100644
-index 000000000000..44b7f854ebdb
---- /dev/null
-+++ b/sysdeps/arc/nptl/pthread_spin_lock.c
-@@ -0,0 +1,24 @@
-+/* pthread spin-lock implementation for ARC.
-+   Copyright (C) 2005-2018 Free Software Foundation, Inc.
-+   This file is part of the GNU C Library.
-+
-+   The GNU C Library is free software; you can redistribute it and/or
-+   modify it under the terms of the GNU Lesser General Public
-+   License as published by the Free Software Foundation; either
-+   version 2.1 of the License, or (at your option) any later version.
-+
-+   The GNU C Library is distributed in the hope that it will be useful,
-+   but WITHOUT ANY WARRANTY; without even the implied warranty of
-+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-+   Lesser General Public License for more details.
-+
-+   You should have received a copy of the GNU Lesser General Public
-+   License along with the GNU C Library.  If not, see
-+   <http://www.gnu.org/licenses/>.  */
-+
-+#define SPIN_LOCK_READS_BETWEEN_CMPXCHG 1000
-+
-+/* We can't use the normal "#include <nptl/pthread_spin_lock.c>" because
-+   it will resolve to this very file.  Using "sysdeps/.." as reference to the
-+   top level directory does the job.  */
-+#include <sysdeps/../nptl/pthread_spin_lock.c>
 diff --git a/sysdeps/arc/nptl/pthreaddef.h b/sysdeps/arc/nptl/pthreaddef.h
 new file mode 100644
 index 000000000000..41e13c53038c
@@ -3109,10 +3106,10 @@ index 000000000000..d52a82eae4ad
 +#include <bits/mman-linux.h>
 diff --git a/sysdeps/unix/sysv/linux/arc/bits/sigaction.h b/sysdeps/unix/sysv/linux/arc/bits/sigaction.h
 new file mode 100644
-index 000000000000..74994890c9d4
+index 000000000000..47e86c06ce98
 --- /dev/null
 +++ b/sysdeps/unix/sysv/linux/arc/bits/sigaction.h
-@@ -0,0 +1,80 @@
+@@ -0,0 +1,85 @@
 +/* The proper definitions for Linux's sigaction.
 +   Copyright (C) 1993-2018 Free Software Foundation, Inc.
 +   This file is part of the GNU C Library.
@@ -3130,6 +3127,9 @@ index 000000000000..74994890c9d4
 +   You should have received a copy of the GNU Lesser General Public
 +   License along with the GNU C Library; if not, see
 +   <http://www.gnu.org/licenses/>.  */
++
++#ifndef _BITS_SIGACTION_H
++#define _BITS_SIGACTION_H 1
 +
 +#ifndef _SIGNAL_H
 +# error "Never include <bits/sigaction.h> directly; use <signal.h> instead."
@@ -3193,6 +3193,9 @@ index 000000000000..74994890c9d4
 +#define	SIG_BLOCK     0		 /* Block signals.  */
 +#define	SIG_UNBLOCK   1		 /* Unblock signals.  */
 +#define	SIG_SETMASK   2		 /* Set the set of blocked signals.  */
++
++#endif
+\ No newline at end of file
 diff --git a/sysdeps/unix/sysv/linux/arc/c++-types.data b/sysdeps/unix/sysv/linux/arc/c++-types.data
 new file mode 100644
 index 000000000000..303f4570c8ee
@@ -3303,7 +3306,7 @@ index 000000000000..7b14211eccf7
 +weak_alias (_flush_cache, cacheflush)
 diff --git a/sysdeps/unix/sysv/linux/arc/clone.S b/sysdeps/unix/sysv/linux/arc/clone.S
 new file mode 100644
-index 000000000000..9fa95354646a
+index 000000000000..04f2df5ef06d
 --- /dev/null
 +++ b/sysdeps/unix/sysv/linux/arc/clone.S
 @@ -0,0 +1,100 @@
@@ -3379,7 +3382,7 @@ index 000000000000..9fa95354646a
 +
 +	; ----- child starts here ---------
 +
-+	; Setup TP register (since kernel doesn't do that)
++	; Setup TP register (only recent kernels v4.19+ do that)
 +	and.f	0, r12, CLONE_SETTLS
 +	mov.nz	r25, r9
 +
@@ -3519,10 +3522,10 @@ index 000000000000..2683ee5e7e2a
 +#endif
 diff --git a/sysdeps/unix/sysv/linux/arc/getcontext.S b/sysdeps/unix/sysv/linux/arc/getcontext.S
 new file mode 100644
-index 000000000000..736556e0b440
+index 000000000000..af31f581e846
 --- /dev/null
 +++ b/sysdeps/unix/sysv/linux/arc/getcontext.S
-@@ -0,0 +1,61 @@
+@@ -0,0 +1,65 @@
 +/* Save current context for ARC
 +   Copyright (C) 2009-2018 Free Software Foundation, Inc.
 +   This file is part of the GNU C Library.
@@ -3552,7 +3555,7 @@ index 000000000000..736556e0b440
 +
 +ENTRY(__getcontext)
 +
-+        /* callee saved registers */
++	/* callee saved registers */
 +	SAVE_REG(r13,   r0, 37)
 +	SAVE_REG(r14,   r0, 36)
 +	SAVE_REG(r15,   r0, 35)
@@ -3570,6 +3573,10 @@ index 000000000000..736556e0b440
 +	SAVE_REG(blink, r0,  7)
 +	SAVE_REG(fp,    r0,  8)
 +	SAVE_REG(sp,    r0, 23)
++
++	/* save 0 in r0 placeholder to return 0 when this @ucp activated */
++	mov r9, 0
++	SAVE_REG(r9,    r0, 22)
 +
 +	/* rt_sigprocmask (SIG_BLOCK, NULL, &ucp->uc_sigmask, _NSIG8) */
 +	mov r3, _NSIG8
@@ -3760,7 +3767,7 @@ index 000000000000..711fc87c2af1
 +GLIBC_2.27 getaddrinfo_a F
 diff --git a/sysdeps/unix/sysv/linux/arc/libc.abilist b/sysdeps/unix/sysv/linux/arc/libc.abilist
 new file mode 100644
-index 000000000000..a4329205b743
+index 000000000000..b25e35d50280
 --- /dev/null
 +++ b/sysdeps/unix/sysv/linux/arc/libc.abilist
 @@ -0,0 +1,2091 @@
@@ -4061,7 +4068,6 @@ index 000000000000..a4329205b743
 +GLIBC_2.27 __mbsnrtowcs_chk F
 +GLIBC_2.27 __mbsrtowcs_chk F
 +GLIBC_2.27 __mbstowcs_chk F
-+GLIBC_2.27 __mcount F
 +GLIBC_2.27 __memalign_hook D 0x4
 +GLIBC_2.27 __memcpy_chk F
 +GLIBC_2.27 __memmove_chk F
@@ -4273,6 +4279,7 @@ index 000000000000..a4329205b743
 +GLIBC_2.27 _libc_intl_domainname D 0x5
 +GLIBC_2.27 _longjmp F
 +GLIBC_2.27 _mcleanup F
++GLIBC_2.27 _mcount F
 +GLIBC_2.27 _nl_default_dirname D 0x12
 +GLIBC_2.27 _nl_domain_bindings D 0x4
 +GLIBC_2.27 _nl_msg_cat_cntr D 0x4
@@ -7218,10 +7225,10 @@ index 000000000000..815f218daa67
 +ld.so: _dl_catch_exception
 diff --git a/sysdeps/unix/sysv/linux/arc/makecontext.c b/sysdeps/unix/sysv/linux/arc/makecontext.c
 new file mode 100644
-index 000000000000..7a3ce4000aab
+index 000000000000..8d233f83da7e
 --- /dev/null
 +++ b/sysdeps/unix/sysv/linux/arc/makecontext.c
-@@ -0,0 +1,58 @@
+@@ -0,0 +1,75 @@
 +/* Create new context for ARC
 +   Copyright (C) 2015-2018 Free Software Foundation, Inc.
 +   This file is part of the GNU C Library.
@@ -7251,7 +7258,7 @@ index 000000000000..7a3ce4000aab
 +  extern void __startcontext (void) attribute_hidden;
 +  unsigned long sp, *r;
 +  va_list vl;
-+  int i;
++  int i, reg_args, stack_args;
 +
 +  sp = ((unsigned long) ucp->uc_stack.ss_sp + ucp->uc_stack.ss_size) & ~7;
 +
@@ -7269,13 +7276,30 @@ index 000000000000..7a3ce4000aab
 +   */
 +  ucp->uc_mcontext.callee.r13 = (unsigned long) func;
 +  ucp->uc_mcontext.callee.r14 = (unsigned long) ucp->uc_link;
++  ucp->uc_mcontext.callee.r15 = 0;
 +
 +  r = &ucp->uc_mcontext.scratch.r0;
 +
 +  va_start (vl, argc);
-+  for (i = 0; i < argc; ++i) {
++
++  reg_args = argc > 8 ? 8 : argc;
++  for (i = 0; i < reg_args; i++) {
 +      *r-- = va_arg(vl, unsigned long);
 +  }
++
++  stack_args = argc - reg_args;
++
++  if (__glibc_unlikely(stack_args > 0)) {
++
++    sp -=  stack_args * sizeof (unsigned long);
++    ucp->uc_mcontext.scratch.sp = sp;
++    r = (unsigned long *)sp;
++
++    for (i = 0; i < stack_args; i++) {
++        *r++ = va_arg(vl, unsigned long);
++    }
++  }
++
 +  va_end (vl);
 +}
 +
@@ -7329,10 +7353,10 @@ index 000000000000..65cc3823ac87
 +#include <sysdeps/unix/sysv/linux/alpha/pt-vfork.S>
 diff --git a/sysdeps/unix/sysv/linux/arc/setcontext.S b/sysdeps/unix/sysv/linux/arc/setcontext.S
 new file mode 100644
-index 000000000000..2bb2a2901033
+index 000000000000..6ec2ec0ddc79
 --- /dev/null
 +++ b/sysdeps/unix/sysv/linux/arc/setcontext.S
-@@ -0,0 +1,90 @@
+@@ -0,0 +1,95 @@
 +/* Set current context for ARC
 +   Copyright (C) 2009-2018 Free Software Foundation, Inc.
 +   This file is part of the GNU C Library.
@@ -7382,7 +7406,7 @@ index 000000000000..2bb2a2901033
 +	LOAD_REG(r6,    r9, 16)
 +	LOAD_REG(r7,    r9, 15)
 +
-+        /* restore callee saved registers */
++	/* restore callee saved registers */
 +	LOAD_REG(r13,   r9, 37)
 +	LOAD_REG(r14,   r9, 36)
 +	LOAD_REG(r15,   r9, 35)
@@ -7401,7 +7425,7 @@ index 000000000000..2bb2a2901033
 +	LOAD_REG(fp,    r9,  8)
 +	LOAD_REG(sp,    r9, 23)
 +
-+        j    [blink]	/* return to getcontext() caller, right after the call */
++	j    [blink]
 +
 +PSEUDO_END(__setcontext)
 +weak_alias(__setcontext, setcontext)
@@ -7414,14 +7438,19 @@ index 000000000000..2bb2a2901033
 +
 +ENTRY(__startcontext)
 +
-+        j    [r13]
++	cfi_register (blink, r15)
 +
-+        breq r14, 0, 1f
++        /* call user @func, loaded in r13 by setcontext() */
++        jl   [r13]
 +
-+        bl.d __setcontext
++        /* if uc_link (r14) call setcontext with that */
 +        mov  r0, r14
++        breq r0, 0, 1f
++
++        bl   __setcontext
 +1:
-+        b    HIDDEN_JUMPTARGET(_exit)
++        /* exit with status 0 */
++        b    HIDDEN_JUMPTARGET(exit)
 +END(__startcontext)
 diff --git a/sysdeps/unix/sysv/linux/arc/shlib-versions b/sysdeps/unix/sysv/linux/arc/shlib-versions
 new file mode 100644
@@ -7565,10 +7594,10 @@ index 000000000000..d74cf0ec00e3
 +PSEUDO_END_NOERRNO(__default_rt_sa_restorer)
 diff --git a/sysdeps/unix/sysv/linux/arc/swapcontext.S b/sysdeps/unix/sysv/linux/arc/swapcontext.S
 new file mode 100644
-index 000000000000..e91d5f28b4ee
+index 000000000000..ad6bf70ab5e2
 --- /dev/null
 +++ b/sysdeps/unix/sysv/linux/arc/swapcontext.S
-@@ -0,0 +1,75 @@
+@@ -0,0 +1,92 @@
 +/* Save and set current context for ARC
 +   Copyright (C) 2009-2018 Free Software Foundation, Inc.
 +   This file is part of the GNU C Library.
@@ -7593,7 +7622,7 @@ index 000000000000..e91d5f28b4ee
 +
 +ENTRY(__swapcontext)
 +
-+        /* save context into @oucp pointed to by r0 */
++	/* save context into @oucp pointed to by r0 */
 +
 +	SAVE_REG(r13,   r0, 37)
 +	SAVE_REG(r14,   r0, 36)
@@ -7613,18 +7642,31 @@ index 000000000000..e91d5f28b4ee
 +	SAVE_REG(fp,    r0,  8)
 +	SAVE_REG(sp,    r0, 23)
 +
-+        /* load context from @ucp pointed to by r1 */
++	/* save 0 in r0 placeholder to return 0 when @oucp activated */
++	mov r9, 0
++	SAVE_REG(r9,    r0, 22)
++
++	/* load context from @ucp */
 +
 +	mov r9, r1	; safekeep @ucp across syscall
 +
-+	/* rt_sigprocmask (SIG_SETMASK, &ucp->uc_sigmask, NULL, _NSIG8) */
++	/* rt_sigprocmask (SIG_SETMASK, &ucp->uc_sigmask, &oucp->uc_sigmask, _NSIG8) */
 +	mov r3, _NSIG8
-+	mov r2, 0
-+	add r1, r0, UCONTEXT_SIGMASK
++	add r2, r0, UCONTEXT_SIGMASK
++	add r1, r1, UCONTEXT_SIGMASK
 +	mov r0, SIG_SETMASK
 +	mov r8, __NR_rt_sigprocmask
 +	ARC_TRAP_INSN
 +	brhi r0, -1024, .Lcall_syscall_err
++
++	LOAD_REG(r0,    r9, 22)
++	LOAD_REG(r1,    r9, 21)
++	LOAD_REG(r2,    r9, 20)
++	LOAD_REG(r3,    r9, 19)
++	LOAD_REG(r4,    r9, 18)
++	LOAD_REG(r5,    r9, 17)
++	LOAD_REG(r6,    r9, 16)
++	LOAD_REG(r7,    r9, 15)
 +
 +	LOAD_REG(r13,   r9, 37)
 +	LOAD_REG(r14,   r9, 36)
@@ -7640,7 +7682,11 @@ index 000000000000..e91d5f28b4ee
 +	LOAD_REG(r24,   r9, 26)
 +	LOAD_REG(r25,   r9, 25)
 +
-+        j    [blink]
++	LOAD_REG(blink, r9,  7)
++	LOAD_REG(fp,    r9,  8)
++	LOAD_REG(sp,    r9, 23)
++
++	j    [blink]
 +
 +PSEUDO_END(__swapcontext)
 +weak_alias(__swapcontext, swapcontext)
@@ -8015,10 +8061,10 @@ index 000000000000..d9bcc305b846
 +#endif
 diff --git a/sysdeps/unix/sysv/linux/arc/sysdep.h b/sysdeps/unix/sysv/linux/arc/sysdep.h
 new file mode 100644
-index 000000000000..225270e5af71
+index 000000000000..9ed06a3206b0
 --- /dev/null
 +++ b/sysdeps/unix/sysv/linux/arc/sysdep.h
-@@ -0,0 +1,259 @@
+@@ -0,0 +1,260 @@
 +/* Assembler macros for ARC.
 +   Copyright (C) 2000-2018 Free Software Foundation, Inc.
 +   This file is part of the GNU C Library.
@@ -8164,13 +8210,14 @@ index 000000000000..225270e5af71
 +	__res = INTERNAL_SYSCALL_NCS(__NR_##name, , nr_args, args);	\
 +	if (__builtin_expect (INTERNAL_SYSCALL_ERROR_P ((__res), ), 0))	\
 +	{								\
-+		asm volatile ( \
++		asm volatile ("st.a blink, [sp, -4] \n\t"		\
 +			       CALL_ERRNO_SETTER                   	\
++			      "ld.ab blink, [sp, 4] \n\t"		\
 +			      :"+r" (__res)                 		\
 +			      :                                   	\
 +			      :"r1","r2","r3","r4","r5","r6",		\
-+			        "r7","r8","r9","r10","r11","r12",	\
-+			        "blink");				\
++			        "r7","r8","r9","r10","r11","r12"	\
++			        );					\
 +	}								\
 +	__res;								\
 +})
@@ -8201,7 +8248,7 @@ index 000000000000..225270e5af71
 +		ARC_TRAP_INSN				\
 +		: "+r" (__ret)				\
 +		: "r"(_sys_num) ASM_ARGS_##nr_args	\
-+		: "memory", "blink");				\
++		: "memory");				\
 +                                                        \
 +	__ret;						\
 +})
@@ -8401,6 +8448,18 @@ index 5306d538e644..d038840b67d3 100644
  arch_prctl
  arm_fadvise64_64
  arm_sync_file_range
+diff --git a/timezone/tst-tzset.c b/timezone/tst-tzset.c
+index 27f986b56dab..fca704c2ad2d 100644
+--- a/timezone/tst-tzset.c
++++ b/timezone/tst-tzset.c
+@@ -25,7 +25,6 @@
+ #include <time.h>
+ #include <unistd.h>
+ 
+-#define TIMEOUT 5
+ static int do_test (void);
+ #define TEST_FUNCTION do_test ()
+ #include "../test-skeleton.c"
 diff --git a/timezone/zic.c b/timezone/zic.c
 index e738386600c2..53b25256d78c 100644
 --- a/timezone/zic.c
