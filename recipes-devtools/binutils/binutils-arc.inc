@@ -10,7 +10,7 @@ LIC_FILES_CHKSUM="\
     file://bfd/COPYING;md5=d32239bcb673463ab874e80d47fae504\
     "
 
-SRCREV ?= "arc-2018.09-rc2"
+SRCREV ?= "arc-2018.09-release"
 
 SRC_URI = "\
      git://github.com/foss-for-synopsys-dwc-arc-processors/binutils-gdb;protocol=https;branch=arc-2018.09; \

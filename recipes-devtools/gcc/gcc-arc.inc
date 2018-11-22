@@ -23,7 +23,7 @@ LIC_FILES_CHKSUM = "\
     file://COPYING.RUNTIME;md5=fe60d87048567d4fe8c8a0ed2448bcc8 \
 "
 
-SRCREV ?= "arc-2018.09-rc2.1"
+SRCREV ?= "arc-2018.09-release"
 
 SRC_URI = "\
            git://github.com/foss-for-synopsys-dwc-arc-processors/gcc.git;protocol=https;branch=arc-2018.09; \
