@@ -7,22 +7,27 @@ INSANE_SKIP_tzcode = "file-rdeps"
 
 
 
-LIC_FILES_CHKSUM = "file://LICENSES;md5=e9a558e243b36d3209f380deb394b213 \
+LIC_FILES_CHKSUM = "file://LICENSES;md5=cfc0ed77a9f62fa62eded042ebe31d72 \
 		    file://COPYING;md5=b234ee4d69f5fce4486a80fdaf4a4263 \
 		    file://posix/rxspencer/COPYRIGHT;md5=dc5485bb394a13b2332ec1c785f5d83a \
 		    file://COPYING.LIB;md5=4fbd65380cdd255951079008b364516c \
 "
+#PV = "2018.09+git${SRCPV}"
+#SRCREV = "a391a04c391ae045877499a20e6e16a2a9998821"
+S  = "${WORKDIR}/git"
 
-DEPENDS += "gperf-native"
+SRCREV = "7dcd11092056dfa791bba5cdb8806f9cabad4295"
+DEPENDS += "gperf-native bison-native make-native"
 
-RELEASE = "2018.03-release"
-SRC_URI[sha256sum] = "e08ab67b2db2d0f0e8f3311d23c54fb8f6d4c1ef6fa0b4047fd5da400e3ce9de"
-SRC_URI = "https://github.com/foss-for-synopsys-dwc-arc-processors/glibc/archive/arc-${RELEASE}.tar.gz \
+#RELEASE = "2018.09"
+SRC_URI = "git://github.com/foss-for-synopsys-dwc-arc-processors/glibc;branch=arc-glibc-2.28;protocol=http;\
            file://etc/ld.so.conf \
            file://generate-supported.mk \
-           file://0001-Fixed-TLS-issues-with-dynamic-loading-of-different-s.patch \
 	   ${NATIVESDKFIXES} \
 "
+SRC_URI[sha256sum] = "865b03702f400e33c35c2c344ea64e5ad4af5318fc787ddf8d17f80d1567af38"
+
+
 
 NATIVESDKFIXES ?= ""
 NATIVESDKFIXES_class-nativesdk = "\
@@ -32,7 +37,7 @@ NATIVESDKFIXES_class-nativesdk = "\
            file://0004-nativesdk-glibc-Allow-64-bit-atomics-for-x86.patch \
 "
 
-S = "${WORKDIR}/glibc-arc-${RELEASE}"
+#S = "${WORKDIR}/glibc-arc-${RELEASE}"
 B = "${WORKDIR}/build-${TARGET_SYS}"
 
 PACKAGES_DYNAMIC = ""
@@ -40,6 +45,8 @@ PACKAGES_DYNAMIC = ""
 # the -isystem in bitbake.conf screws up glibc do_stage
 BUILD_CPPFLAGS = "-I${STAGING_INCDIR_NATIVE}"
 TARGET_CPPFLAGS = "-I${STAGING_DIR_TARGET}${includedir}"
+
+#TARGET_CFLAGS += "-g -Wl,-q"
 
 GLIBC_BROKEN_LOCALES = ""
 #

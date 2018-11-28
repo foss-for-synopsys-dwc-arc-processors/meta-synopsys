@@ -1,18 +1,19 @@
 require recipes-devtools/gcc/gcc-common.inc
 
-GCC_TAG = "arc-2018.03-release"
+#GCC_TAG = "arc-2018.03-release"
 SRC_URI[sha256sum] = "4968b10702d7daa77b9787c6a1052102743c3f9bc959d331c8472af8acfbb273"
 SRC_URI = "\
-	https://github.com/foss-for-synopsys-dwc-arc-processors/gcc/archive/${GCC_TAG}.tar.gz;downloadfilename=gcc-${PV}.tar.gz \
-	file://0001-libgcc-fix-the-unwind-installation.patch \
-	file://0032-gcc-4.8-won-t-build-with-disable-dependency-tracking.patch \
+	git://github.com/foss-for-synopsys-dwc-arc-processors/gcc;branch=arc-2018.09;protocol=http; \
 	file://0014-optional-libstdc.patch \
+	file://0024-gcc-4.8-won-t-build-with-disable-dependency-tracking.patch \
 "
 
-BINV = "7.3.1"
-TARGET_CFLAGS += "-Os"
+BINV = "8.2.1"
 
-S = "${TMPDIR}/work-shared/gcc-${PV}-${PR}/gcc-${GCC_TAG}"
+#SRCREV = "${AUTOREV}"
+SRCREV= "d470d081a52fc51efc2b0391d44773d31821f674"
+
+S = "${TMPDIR}/work-shared/gcc-${PV}-${PR}/git"
 B = "${WORKDIR}/git/build.${HOST_SYS}.${TARGET_SYS}"
 
 DEPENDS =+ "mpfr gmp libmpc zlib"
@@ -20,6 +21,8 @@ NATIVEDEPS = "mpfr-native gmp-native libmpc-native zlib-native"
 
 JAVA = ""
 FORTRAN = ""
+
+TARGET_CFLAGS += "-Os"
 
 LICENSE = "GPL-3.0-with-GCC-exception & GPLv3"
 LIC_FILES_CHKSUM = "\
@@ -36,7 +39,6 @@ LTO = "--enable-lto"
 
 EXTRA_OECONF_BASE = "\
 	${LTO} \
-	--enable-libssp \
 	--enable-libitm \
 	--disable-bootstrap \
 	--disable-libmudflap \
