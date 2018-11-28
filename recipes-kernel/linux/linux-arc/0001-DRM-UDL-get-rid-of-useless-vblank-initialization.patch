@@ -1,0 +1,44 @@
+From 2d98fce2330347051c091d7c05da8cbc9f1a5feb Mon Sep 17 00:00:00 2001
+From: Eugeniy Paltsev <Eugeniy.Paltsev@synopsys.com>
+Date: Thu, 4 Oct 2018 20:42:12 +0300
+Subject: [PATCH 1/3] DRM: UDL: get rid of useless vblank initialization
+
+UDL doesn't support vblank functionality so we don't need to
+initialize vblank here (we are able to send page flip
+completion events even without vblank initialization)
+
+Moreover current drm_vblank_init call with num_crtcs > 0 causes
+sending DRM_EVENT_FLIP_COMPLETE event with zero timestamp every
+time. This breaks userspace apps (for example weston) which
+relies on timestamp value.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Eugeniy Paltsev <Eugeniy.Paltsev@synopsys.com>
+---
+ drivers/gpu/drm/udl/udl_main.c | 7 +------
+ 1 file changed, 1 insertion(+), 6 deletions(-)
+
+diff --git a/drivers/gpu/drm/udl/udl_main.c b/drivers/gpu/drm/udl/udl_main.c
+index d518de8f496b..cf5d2dc494ee 100644
+--- a/drivers/gpu/drm/udl/udl_main.c
++++ b/drivers/gpu/drm/udl/udl_main.c
+@@ -349,15 +349,10 @@ int udl_driver_load(struct drm_device *dev, unsigned long flags)
+ 	if (ret)
+ 		goto err;
+ 
+-	ret = drm_vblank_init(dev, 1);
+-	if (ret)
+-		goto err_fb;
+-
+ 	drm_kms_helper_poll_init(dev);
+ 
+ 	return 0;
+-err_fb:
+-	udl_fbdev_cleanup(dev);
++
+ err:
+ 	if (udl->urbs.count)
+ 		udl_free_urb_list(dev);
+-- 
+2.16.2
+
