@@ -14,10 +14,17 @@ SRC_URI = "https://www.kernel.org/pub/linux/kernel/v4.x/linux-${PV}.tar.xz \
 	file://1001-Agl-hsdk-defconfig.patch \
 	file://0006-Use-dev-mmcblk0p2-as-rootfs-storage.patch \
 	file://0001-DRM-UDL-get-rid-of-useless-vblank-initialization.patch \
+	file://3003-Experimental-ARC-increase-memory-to-1.5GB.patch \
 "
 #file://2001-ARC-prevent-showing-irrelevant-exception-info-in-sig.patch 
 #file://2002-ARC-split-show_faulting_vma-for-logic-and-representa.patch 
 #file://2003-ARC-ARCv2-Introduce-SmaRT-support.patch 
+#file://3003-Experimental-ARC-increase-memory-to-1.5GB.patch 
+
+#        file://4001-HSDK-add-highmem-zone.patch 
+#        file://4002-ARC-temporary-disable-IOC.patch 
+#        file://4003-ARC-cache-ops-add-assertions.patch 
+
 
 S = "${WORKDIR}/linux-${PV}"
 

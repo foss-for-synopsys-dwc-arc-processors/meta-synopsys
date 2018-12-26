@@ -1,18 +1,18 @@
-From 589c87fb087c0831b2669d35393ff3b1e7b1eb13 Mon Sep 17 00:00:00 2001
+From 47d109c814f0ebfdeb95eea4449316d938158f72 Mon Sep 17 00:00:00 2001
 From: Evgeniy Didin <Evgeniy.Didin@synopsys.com>
-Date: Thu, 15 Nov 2018 14:16:18 +0300
+Date: Thu, 13 Dec 2018 17:12:56 +0300
 Subject: [PATCH] AGL hsdk defconfig
 
 Signed-off-by: Evgeniy Didin <Evgeniy.Didin@synopsys.com>
 ---
- arch/arc/configs/hsdk_defconfig | 1114 ++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 1105 insertions(+), 10 deletions(-)
+ arch/arc/configs/hsdk_defconfig | 1113 ++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 1103 insertions(+), 10 deletions(-)
 
 diff --git a/arch/arc/configs/hsdk_defconfig b/arch/arc/configs/hsdk_defconfig
-index 913193f28680..8b37b4b01ffd 100644
+index fd0ba7298050..8b37b4b01ffd 100644
 --- a/arch/arc/configs/hsdk_defconfig
 +++ b/arch/arc/configs/hsdk_defconfig
-@@ -1,77 +1,1171 @@
+@@ -1,78 +1,1171 @@
 +CONFIG_DEFAULT_HOSTNAME="ARCLinux"
  CONFIG_SYSVIPC=y
 +CONFIG_POSIX_MQUEUE=y
@@ -1090,7 +1090,7 @@ index 913193f28680..8b37b4b01ffd 100644
 +CONFIG_SQUASHFS_LZO=y
 +CONFIG_SQUASHFS_XZ=y
  CONFIG_NFS_FS=y
-+CONFIG_NFS_V3_ACL=y
+ CONFIG_NFS_V3_ACL=y
 +CONFIG_NFS_V4=y
 +CONFIG_NFS_SWAP=y
 +CONFIG_ROOT_NFS=y
@@ -1194,7 +1194,6 @@ index 913193f28680..8b37b4b01ffd 100644
 +CONFIG_CRC_ITU_T=y
 +CONFIG_LIBCRC32C=y
 +CONFIG_PM=y
-+CONFIG_ARC_SMART_TRACE=y
 -- 
 2.16.2
 
