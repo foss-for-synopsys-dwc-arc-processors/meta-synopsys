@@ -15,6 +15,7 @@ SRC_URI = "https://www.kernel.org/pub/linux/kernel/v4.x/linux-${PV}.tar.xz \
 	file://0006-Use-dev-mmcblk0p2-as-rootfs-storage.patch \
 	file://0001-DRM-UDL-get-rid-of-useless-vblank-initialization.patch \
 	file://3003-Experimental-ARC-increase-memory-to-1.5GB.patch \
+	file://5001-Enable-FBDEV_DRM-emulation-for-HSDK.patch \
 "
 #file://2001-ARC-prevent-showing-irrelevant-exception-info-in-sig.patch 
 #file://2002-ARC-split-show_faulting_vma-for-logic-and-representa.patch 
