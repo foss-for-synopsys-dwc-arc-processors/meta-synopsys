@@ -15,3 +15,6 @@ def arc_siteinfo_data(archinfo, osinfo, targetinfo, d):
     return archinfo, osinfo, targetinfo
 
 SITEINFO_EXTRA_DATAFUNCS = "arc_siteinfo_data"
+PREFERRED_PROVIDER_virtual/bootloader = "u-boot"
+UBOOT_MACHINE = "hsdk_config"
+EXTRA_IMAGEDEPENDS += "u-boot"
