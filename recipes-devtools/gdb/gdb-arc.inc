@@ -17,16 +17,3 @@ SRC_URI = "git://github.com/foss-for-synopsys-dwc-arc-processors/binutils-gdb;pr
 "
 
 S = "${WORKDIR}/git"
-
-# Currently ARC GCC generates invalid CFA information for instructions in
-# delay-slot which is used in run-time for stack unwinding
-# which in its turn is used for exception handling.
-#
-# See https://github.com/foss-for-synopsys-dwc-arc-processors/gcc/issues/69
-# for more technical details.
-#
-# For now we're working this around compiling GDB with "-Os"
-# which fortunately generates a bit different code and so we at least
-# don't get segfault of GDB left and right.
-CFLAGS_append = " -Os"
-CXXFLAGS_append = " -Os"
