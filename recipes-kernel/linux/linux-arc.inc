@@ -10,6 +10,7 @@ SRC_URI = "\
     file://0009-UDL-add-pseudo-deferred-io-for-modeset-drive.patch \
     file://0010-UDL-defio-add-fb-lock-and-required-checks.patch \
     file://0011-ARC-hsdk-Enable-U-Boot-support.patch \
+    file://0012-ARC-hsdk-Enable-cgroups-support.patch \
     "
 
 S = "${WORKDIR}/linux-${PV}"
