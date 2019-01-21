@@ -8,4 +8,4 @@ do_environment_image () {
 	mkenvimage -s 0x4000 ${WORKDIR}/uboot.env.txt -o ${WORKDIR}/uboot.env
 }
 
-addtask environment_image after do_install_native-mkimage before do_deploy
+addtask do_environment_image after do_prepare_recipe_sysroot do_unpack before do_install
