@@ -1,0 +1,47 @@
+From 2b9e3c6ad6a13e3ec144cda9d631682f825fae90 Mon Sep 17 00:00:00 2001
+From: Alexey Brodkin <abrodkin@synopsys.com>
+Date: Fri, 8 Feb 2019 13:36:59 +0300
+Subject: [PATCH] ARC: Explicitly set ARCH_SLAB_MINALIGN = 8
+
+By default ARCH_SLAB_MINALIGN is defined in "include/linux/slab.h" as
+"__alignof__(unsigned long long)" which looks fine but not for ARC.
+
+ARC tools ABI sets align of "long long" the same as for "long" = 4
+instead of 8 one may think of.
+
+Thus slab allocator may easily allocate a buffer which is 32-bit aligned.
+And most of the time it's OK until we start dealing with 64-bit atomics
+with special LLOCKD/SCONDD instructions which (as opposed to their 32-bit
+counterparts LLOCK/SCOND) operate with full 64-bit words but those words
+must be 64-bit aligned.
+
+Signed-off-by: Alexey Brodkin <abrodkin@synopsys.com>
+Cc: <stable@vger.kernel.org> # 4.8+
+---
+ arch/arc/include/asm/cache.h | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
+
+diff --git a/arch/arc/include/asm/cache.h b/arch/arc/include/asm/cache.h
+index f393b663413e..74f8fcaaef5c 100644
+--- a/arch/arc/include/asm/cache.h
++++ b/arch/arc/include/asm/cache.h
+@@ -52,6 +52,16 @@
+ #define cache_line_size()	SMP_CACHE_BYTES
+ #define ARCH_DMA_MINALIGN	SMP_CACHE_BYTES
+ 
++/*
++ * Make sure slab-allocated buffers are 64-bit aligned.
++ * This is required for llockd/scondd to deal with 64-bit aligned dwords.
++ * By default ARCH_SLAB_MINALIGN is __alignof__(long long) which in
++ * case of ARC is 4 instead of 8!
++ */
++#ifdef CONFIG_ARC_HAS_LL64
++#define ARCH_SLAB_MINALIGN	8
++#endif
++
+ extern void arc_cache_init(void);
+ extern char *arc_cache_mumbojumbo(int cpu_id, char *buf, int len);
+ extern void read_decode_cache_bcr(void);
+-- 
+2.16.2
+
