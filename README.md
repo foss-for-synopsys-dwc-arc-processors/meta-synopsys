@@ -145,3 +145,4 @@ check free memory using *free* utility. If the number of free memory is less the
 ```
 sync; echo 1 > /proc/sys/vm/drop_caches 
 ```
+4) Changing date and time using "Settings" application is not working. It is a general issue which reproduces in Flounder_6.0.4 release(latest relesase of flounder branch dated 02.2019) on RPI and QEMU images.
