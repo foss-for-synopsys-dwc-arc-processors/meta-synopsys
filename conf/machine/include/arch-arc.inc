@@ -2,7 +2,7 @@ TUNEVALID[bigendian] = "Enable big-endian mode"
 
 TUNE_ARCH = "${@bb.utils.contains('TUNE_FEATURES', 'bigendian', 'arceb', 'arc', d)}"
 
-MACHINE_FEATURES_remove = "qemu-usermode"
+MACHINE_FEATURES_BACKFILL_CONSIDERED_append = " qemu-usermode"
 
 PREFERRED_PROVIDER_virtual/kernel ?= "linux-arc"
 
