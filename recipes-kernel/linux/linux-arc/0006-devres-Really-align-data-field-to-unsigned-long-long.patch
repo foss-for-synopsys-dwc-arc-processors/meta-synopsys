@@ -1,0 +1,42 @@
+From 0b124e661d4dbb1b04031cc37c0359f7344d1bfb Mon Sep 17 00:00:00 2001
+From: Eugeniy Paltsev <Eugeniy.Paltsev@synopsys.com>
+Date: Wed, 10 Oct 2018 18:53:14 +0300
+Subject: [PATCH 6/7] devres: Really align data field to unsigned long long
+
+It looks like on most of architectures "data" member of devres struture
+gets aligned to 8-byte "unsigned long long" boundary as one may expect:
+if we don't explicitly pack a structure then natural alignment
+(which matches each member data type) is used.
+
+But at least on 32-bit ARC architecture ABI requires "long long" types
+to be aligned by normal 32-bit word. This makes "data" field aligned to
+12 bytes. This is still OK as long as we use 32-bit data only.
+
+But once we want to use native atomic64_t type (i.e. when we use special
+instructions LLOCKD/SCONDD for accessing 64-bit data) we easily hit
+misaligned access exception.
+
+That's because even on CPUs capable of non-aligned data access LL/SC
+instructions require strict alignment.
+
+Signed-off-by: Eugeniy Paltsev <Eugeniy.Paltsev@synopsys.com>
+---
+ drivers/base/devres.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/base/devres.c b/drivers/base/devres.c
+index f98a097e73f2..1a444f043c68 100644
+--- a/drivers/base/devres.c
++++ b/drivers/base/devres.c
+@@ -25,7 +25,7 @@ struct devres_node {
+ struct devres {
+ 	struct devres_node		node;
+ 	/* -- 3 pointers */
+-	unsigned long long		data[];	/* guarantee ull alignment */
++	unsigned long long		data[] __aligned(sizeof(unsigned long long));	/* guarantee ull alignment */
+ };
+ 
+ struct devres_group {
+-- 
+2.16.2
+

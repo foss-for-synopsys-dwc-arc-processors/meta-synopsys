@@ -1,0 +1,40 @@
+From e213de42b29c286f2c49d96c824ab362c5669e30 Mon Sep 17 00:00:00 2001
+From: Evgeniy Didin <Evgeniy.Didin@synopsys.com>
+Date: Tue, 4 Dec 2018 17:52:52 +0300
+Subject: [PATCH] Experimental: ARC: increase memory to 1.5GB
+
+Signed-off-by: Evgeniy Didin <Evgeniy.Didin@synopsys.com>
+---
+ arch/arc/boot/dts/hsdk.dts | 2 +-
+ arch/arc/mm/cache.c        | 3 ++-
+ 2 files changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/arch/arc/boot/dts/hsdk.dts b/arch/arc/boot/dts/hsdk.dts
+index 7a0da3c89c72..014f6bab1cf5 100644
+--- a/arch/arc/boot/dts/hsdk.dts
++++ b/arch/arc/boot/dts/hsdk.dts
+@@ -234,6 +234,6 @@
+ 		#address-cells = <1>;
+ 		#size-cells = <1>;
+ 		device_type = "memory";
+-		reg = <0x80000000 0x40000000>;  /* 1 GiB */
++		reg = <0x80000000 0x60000000>;  /* 1 GiB */
+ 	};
+ };
+diff --git a/arch/arc/mm/cache.c b/arch/arc/mm/cache.c
+index f2701c13a66b..cedb7cefe08a 100644
+--- a/arch/arc/mm/cache.c
++++ b/arch/arc/mm/cache.c
+@@ -1169,7 +1169,8 @@ noinline void __init arc_ioc_setup(void)
+ 	 * TBD: fix for PGU + 1GB of low mem
+ 	 * TBD: fix for PAE
+ 	 */
+-	mem_sz = arc_get_mem_sz();
++	//mem_sz = arc_get_mem_sz();
++	mem_sz = 0x80000000;
+ 
+ 	if (!is_power_of_2(mem_sz) || mem_sz < 4096)
+ 		panic("IOC Aperture size must be power of 2 larger than 4KB");
+-- 
+2.16.2
+

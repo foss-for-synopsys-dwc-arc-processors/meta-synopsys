@@ -1,0 +1,26 @@
+From 12a10b429e816a6b7fb848ef6eef9db26844856b Mon Sep 17 00:00:00 2001
+From: Evgeniy Didin <Evgeniy.Didin@synopsys.com>
+Date: Wed, 24 Oct 2018 22:40:46 +0300
+Subject: [PATCH] Use /dev/mmcblk0p2 as rootfs storage
+
+Signed-off-by: Evgeniy Didin <Evgeniy.Didin@synopsys.com>
+---
+ arch/arc/boot/dts/hsdk.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/arc/boot/dts/hsdk.dts b/arch/arc/boot/dts/hsdk.dts
+index e1d608038ff7..4d235b652e7f 100644
+--- a/arch/arc/boot/dts/hsdk.dts
++++ b/arch/arc/boot/dts/hsdk.dts
+@@ -22,7 +22,7 @@
+ 	#size-cells = <1>;
+ 
+ 	chosen {
+-		bootargs = "earlycon=uart8250,mmio32,0xf0005000,115200n8 console=ttyS0,115200n8 debug print-fatal-signals=1";
++		bootargs = "earlycon=uart8250,mmio32,0xf0005000,115200n8 console=ttyS0,115200n8 print-fatal-signals=1 root=/dev/mmcblk0p2 rootwait";
+ 	};
+ 
+ 	aliases {
+-- 
+2.16.2
+

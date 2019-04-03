@@ -1,0 +1,42 @@
+From cfe4c0df27e2426ccad67250319283bb68bec6e9 Mon Sep 17 00:00:00 2001
+From: Eugeniy Paltsev <Eugeniy.Paltsev@synopsys.com>
+Date: Tue, 18 Dec 2018 14:02:27 +0300
+Subject: [PATCH 3/3] ARC: cache-ops: add assertions
+
+Signed-off-by: Eugeniy Paltsev <Eugeniy.Paltsev@synopsys.com>
+---
+ arch/arc/mm/cache.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/arch/arc/mm/cache.c b/arch/arc/mm/cache.c
+index b4e2e1e2b50e..2d6ee1962dbc 100644
+--- a/arch/arc/mm/cache.c
++++ b/arch/arc/mm/cache.c
+@@ -880,18 +880,24 @@ static void __dma_cache_wback_l1(phys_addr_t start, unsigned long sz)
+  */
+ static void __dma_cache_wback_inv_slc(phys_addr_t start, unsigned long sz)
+ {
++	BUG_ON(upper_32_bits(start));
++
+ 	__dc_line_op_k(start, sz, OP_FLUSH_N_INV);
+ 	slc_op(start, sz, OP_FLUSH_N_INV);
+ }
+ 
+ static void __dma_cache_inv_slc(phys_addr_t start, unsigned long sz)
+ {
++	BUG_ON(upper_32_bits(start));
++
+ 	__dc_line_op_k(start, sz, OP_INV);
+ 	slc_op(start, sz, OP_INV);
+ }
+ 
+ static void __dma_cache_wback_slc(phys_addr_t start, unsigned long sz)
+ {
++	BUG_ON(upper_32_bits(start));
++
+ 	__dc_line_op_k(start, sz, OP_FLUSH);
+ 	slc_op(start, sz, OP_FLUSH);
+ }
+-- 
+2.14.5
+
