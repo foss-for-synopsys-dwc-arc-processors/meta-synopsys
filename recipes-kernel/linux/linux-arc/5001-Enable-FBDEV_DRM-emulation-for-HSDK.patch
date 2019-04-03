@@ -1,0 +1,22 @@
+From 578237a2fcb6c687b8123f8be0fd4bd3ce8a719b Mon Sep 17 00:00:00 2001
+From: Evgeniy Didin <Evgeniy.Didin@synopsys.com>
+Date: Wed, 26 Dec 2018 15:08:35 +0300
+Subject: [PATCH] Enable FBDEV_DRM emulation for HSDK
+
+Signed-off-by: Evgeniy Didin <Evgeniy.Didin@synopsys.com>
+---
+ arch/arc/configs/hsdk_defconfig | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/arch/arc/configs/hsdk_defconfig b/arch/arc/configs/hsdk_defconfig
+index 8b37b4b01ffd..c369637686fc 100644
+--- a/arch/arc/configs/hsdk_defconfig
++++ b/arch/arc/configs/hsdk_defconfig
+@@ -1169,3 +1169,4 @@ CONFIG_CRC_CCITT=y
+ CONFIG_CRC_ITU_T=y
+ CONFIG_LIBCRC32C=y
+ CONFIG_PM=y
++CONFIG_DRM_FBDEV_EMULATION=y
+-- 
+2.16.2
+

@@ -1,0 +1,49 @@
+From 19c3eddda384b1280f664aed96aec1d88213aa9e Mon Sep 17 00:00:00 2001
+From: Eugeniy Paltsev <Eugeniy.Paltsev@synopsys.com>
+Date: Tue, 18 Dec 2018 13:37:04 +0300
+Subject: [PATCH 1/3] HSDK: add highmem zone
+
+Signed-off-by: Eugeniy Paltsev <Eugeniy.Paltsev@synopsys.com>
+---
+ arch/arc/boot/dts/hsdk.dts | 11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
+
+diff --git a/arch/arc/boot/dts/hsdk.dts b/arch/arc/boot/dts/hsdk.dts
+index 43f17b51ee89..ff860c537fd1 100644
+--- a/arch/arc/boot/dts/hsdk.dts
++++ b/arch/arc/boot/dts/hsdk.dts
+@@ -18,8 +18,8 @@
+ 	model = "snps,hsdk";
+ 	compatible = "snps,hsdk";
+ 
+-	#address-cells = <1>;
+-	#size-cells = <1>;
++	#address-cells = <2>;
++	#size-cells = <2>;
+ 
+ 	chosen {
+ 		bootargs = "earlycon=uart8250,mmio32,0xf0005000,115200n8 console=ttyS0,115200n8 debug print-fatal-signals=1";
+@@ -105,7 +105,7 @@
+ 		#size-cells = <1>;
+ 		interrupt-parent = <&idu_intc>;
+ 
+-		ranges = <0x00000000 0xf0000000 0x10000000>;
++		ranges = <0x00000000 0x0 0xf0000000 0x10000000>;
+ 
+ 		cgu_rst: reset-controller@8a0 {
+ 			compatible = "snps,hsdk-reset";
+@@ -240,9 +240,8 @@
+ 	};
+ 
+ 	memory@80000000 {
+-		#address-cells = <1>;
+-		#size-cells = <1>;
+ 		device_type = "memory";
+-		reg = <0x80000000 0x40000000>;  /* 1 GiB */
++		reg = <0x0 0x80000000 0x0 0x40000000	/* 1 GiB lowmem */
++		       0x1 0x00000000 0x0 0x80000000>;	/* 2 GiB highmem */
+ 	};
+ };
+-- 
+2.14.5
+
