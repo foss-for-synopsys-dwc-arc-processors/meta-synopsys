@@ -146,9 +146,9 @@ check free memory using *free* utility. If the number of free memory is less the
 sync; echo 1 > /proc/sys/vm/drop_caches 
 ```
 4) Changing date and time using "Settings" application is not working. It is a general issue which reproduces in Flounder_6.0.4 release(latest relesase of flounder branch dated 02.2019) on RPI and QEMU images.
-5) In AGL version flounder_5.99.1 autoscaling on top of graphical stack (AGL apps) is not implemented yet. The resolution of AGL layout is 1920x1080. The line ```mode=173.00  1920 2048 2248 2576  1080 1083 1088 1120 -hsync +vsync``` in **/etc/xdg/weston/weston.ini** scales AGL layout using capabilities of weston for some displays. If monitor has resolution 1920x1080 or close to it, please remove this line.  Monitors, which were tested:
+5) In AGL version flounder_5.99.1 autoscaling on top of graphical stack (AGL apps) is not implemented yet. The resolution of AGL layout is 1920x1080. The line ```mode=173.00  1920 2048 2248 2576  1080 1083 1088 1120 -hsync +vsync``` in **/etc/xdg/weston/weston.ini** scales AGL layout using capabilities of weston for some displays. Some monitors does not support **-hsync +vsync**. If you see black screen after boot, try to remove this part of line. Monitors, which were tested:
   * DELL p2715q (3840x2160 (16:9)) -> requires this line
   * Samsung SyncMaster 940N (1280x1024 (5:4))  -> requires this line
-  * DELL u2412M (1920x1200 (16:10)) -> necessary to remove this line
+  * DELL u2412M (1920x1200 (16:10)) -> necessary to remove **-hsync +vsync**
 
 
