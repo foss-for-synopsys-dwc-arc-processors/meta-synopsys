@@ -1,0 +1,26 @@
+From 46373cf1ea28bc89cba099dd454d440bfadece09 Mon Sep 17 00:00:00 2001
+From: Evgeniy Didin <Evgeniy.Didin@synopsys.com>
+Date: Wed, 26 Dec 2018 18:55:14 +0300
+Subject: [PATCH] Disable suspending idle sinks
+
+Signed-off-by: Evgeniy Didin <Evgeniy.Didin@synopsys.com>
+---
+ src/daemon/default.pa.in | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/daemon/default.pa.in b/src/daemon/default.pa.in
+index 233bf72..e40d540 100755
+--- a/src/daemon/default.pa.in
++++ b/src/daemon/default.pa.in
+@@ -136,7 +136,7 @@ load-module module-always-sink
+ load-module module-intended-roles
+ 
+ ### Automatically suspend sinks/sources that become idle for too long
+-load-module module-suspend-on-idle
++# load-module module-suspend-on-idle
+ 
+ ### If autoexit on idle is enabled we want to make sure we only quit
+ ### when no local session needs us anymore.
+-- 
+1.8.3.1
+
