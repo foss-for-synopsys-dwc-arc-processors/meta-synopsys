@@ -1,0 +1,43 @@
+From 1ffca5da1b370a889cfa428824e698fec6c6417a Mon Sep 17 00:00:00 2001
+From: Evgeniy Didin <Evgeniy.Didin@synopsys.com>
+Date: Tue, 26 Mar 2019 14:26:05 +0300
+Subject: [PATCH] Modify daemon.conf for lack of hw resources
+
+Signed-off-by: Evgeniy Didin <Evgeniy.Didin@synopsys.com>
+---
+ src/daemon/daemon.conf.in | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/src/daemon/daemon.conf.in b/src/daemon/daemon.conf.in
+index a95552382..dbee1de73 100644
+--- a/src/daemon/daemon.conf.in
++++ b/src/daemon/daemon.conf.in
+@@ -53,14 +53,14 @@ ifelse(@HAVE_DBUS@, 1, [dnl
+ ; log-time = no
+ ; log-backtrace = 0
+ 
+-; resample-method = speex-float-1
++resample-method = trivial
+ ; avoid-resampling = false
+ ; enable-remixing = yes
+ ; remixing-use-all-sink-channels = yes
+ ; enable-lfe-remixing = no
+ ; lfe-crossover-freq = 0
+ 
+-; flat-volumes = yes
++flat-volumes =  no
+ 
+ ifelse(@HAVE_SYS_RESOURCE_H@, 1, [dnl
+ ; rlimit-fsize = -1
+@@ -77,7 +77,7 @@ ifelse(@HAVE_SYS_RESOURCE_H@, 1, [dnl
+ ; rlimit-msgqueue = -1
+ ; rlimit-nice = 31
+ ; rlimit-rtprio = 9
+-; rlimit-rttime = 200000
++rlimit-rttime = 4000000
+ ])dnl
+ 
+ ; default-sample-format = s16le
+-- 
+2.16.2
+
