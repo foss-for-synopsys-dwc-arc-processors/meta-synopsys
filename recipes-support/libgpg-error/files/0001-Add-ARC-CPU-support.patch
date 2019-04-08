@@ -1,0 +1,56 @@
+From 5ec38d41840694df90bec490594828dd1a2ab560 Mon Sep 17 00:00:00 2001
+From: Evgeniy Didin <Evgeniy.Didin@synopsys.com>
+Date: Tue, 26 Mar 2019 13:47:20 +0300
+Subject: [PATCH] Add ARC CPU support
+
+Signed-off-by: Evgeniy Didin <Evgeniy.Didin@synopsys.com>
+---
+ src/Makefile.am                                 |  1 +
+ src/syscfg/lock-obj-pub.arc-unknown-linux-gnu.h | 23 +++++++++++++++++++++++
+ 2 files changed, 24 insertions(+)
+ create mode 100644 src/syscfg/lock-obj-pub.arc-unknown-linux-gnu.h
+
+diff --git a/src/Makefile.am b/src/Makefile.am
+index 8ec582e..cc2e3c9 100644
+--- a/src/Makefile.am
++++ b/src/Makefile.am
+@@ -50,6 +50,7 @@ lock_obj_pub = \
+         syscfg/lock-obj-pub.arm-unknown-linux-androideabi.h \
+         syscfg/lock-obj-pub.arm-unknown-linux-gnueabi.h     \
+ 	syscfg/lock-obj-pub.arm-apple-darwin.h              \
++        syscfg/lock-obj-pub.arc-unknown-linux-gnu.h         \
+         syscfg/lock-obj-pub.hppa-unknown-linux-gnu.h        \
+ 	syscfg/lock-obj-pub.i386-apple-darwin.h             \
+         syscfg/lock-obj-pub.i686-unknown-gnu.h              \
+diff --git a/src/syscfg/lock-obj-pub.arc-unknown-linux-gnu.h b/src/syscfg/lock-obj-pub.arc-unknown-linux-gnu.h
+new file mode 100644
+index 0000000..8d4196e
+--- /dev/null
++++ b/src/syscfg/lock-obj-pub.arc-unknown-linux-gnu.h
+@@ -0,0 +1,23 @@
++## lock-obj-pub.arc-unknown-linux-gnu.h
++## File created by gen-posix-lock-obj - DO NOT EDIT
++## To be included by mkheader into gpg-error.h
++
++typedef struct
++{
++  long _vers;
++  union {
++    volatile char _priv[24];
++    long _x_align;
++    long *_xp_align;
++  } u;
++} gpgrt_lock_t;
++
++#define GPGRT_LOCK_INITIALIZER {1,{{0,0,0,0,0,0,0,0, \
++                                    0,0,0,0,0,0,0,0, \
++                                    0,0,0,0,0,0,0,0}}}
++##
++## Local Variables:
++## mode: c
++## buffer-read-only: t
++## End:
++##
+-- 
+2.16.2
+
