@@ -1,0 +1,38 @@
+From b439b998d72b64ecb3028bafe2b4e8832919315d Mon Sep 17 00:00:00 2001
+From: Evgeniy Didin <Evgeniy.Didin@synopsys.com>
+Date: Tue, 26 Mar 2019 15:06:19 +0300
+Subject: [PATCH] Set -Wno-error=maybe-uninitialized for ARC
+
+Signed-off-by: Evgeniy Didin <Evgeniy.Didin@synopsys.com>
+---
+ conf.d/cmake/config.cmake | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
+
+diff --git a/conf.d/cmake/config.cmake b/conf.d/cmake/config.cmake
+index cad98ee..fccd4a0 100644
+--- a/conf.d/cmake/config.cmake
++++ b/conf.d/cmake/config.cmake
+@@ -104,7 +104,6 @@ set(COMPILE_OPTIONS
+ -Wno-unused-parameter
+ -Wno-sign-compare
+ -Wno-sign-conversion
+--Werror=maybe-uninitialized
+ -Werror=implicit-function-declaration
+ -ffunction-sections
+ -fdata-sections
+@@ -116,8 +115,10 @@ set(COMPILE_OPTIONS
+ -DTLV_BYTE_SIZE=256      # Alsa use 4096 as default but 256 should fit most sndcards
+ -DCONTROL_MAXPATH_LEN=255
+  CACHE STRING "Compilation flags")
+-#set(C_COMPILE_OPTIONS "" CACHE STRING "Compilation flags for C language.")
+-#set(CXX_COMPILE_OPTIONS "" CACHE STRING "Compilation flags for C++ language.")
++
++# For ARC CPU
++set(C_COMPILE_OPTIONS "-Wno-error=maybe-uninitialized" CACHE STRING "Compilation flags for C language.")
++set(CXX_COMPILE_OPTIONS "-Wno-error=maybe-uninitialized" CACHE STRING "Compilation flags for C++ language.")
+ #set(PROFILING_COMPILE_OPTIONS
+ # -g
+ # -O0
+-- 
+1.8.3.1
+
