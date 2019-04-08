@@ -1,0 +1,87 @@
+From 771b7cfc11cec3638b0a4f47edeeaabe2ba46cb6 Mon Sep 17 00:00:00 2001
+From: Pekka Paalanen <pq@iki.fi>
+Date: Thu, 12 Oct 2017 13:13:43 +0200
+Subject: [PATCH 07/46] compositor: add option to enable weston_debug
+
+Let users enable the compositor debug protocol on the compositor command
+line. This allows weston-debug tool to work.
+
+Signed-off-by: Pekka Paalanen <pq@iki.fi>
+Signed-off-by: Maniraj Devadoss <Maniraj.Devadoss@in.bosch.com>
+Reviewed-by: Pekka Paalanen <pekka.paalanen@collabora.co.uk>
+---
+ compositor/main.c |  7 +++++++
+ man/weston.man    | 11 +++++++++++
+ 2 files changed, 18 insertions(+)
+
+diff --git a/compositor/main.c b/compositor/main.c
+index b5b4fc59..2f34e111 100644
+--- a/compositor/main.c
++++ b/compositor/main.c
+@@ -60,6 +60,7 @@
+ #include "compositor-x11.h"
+ #include "compositor-wayland.h"
+ #include "windowed-output-api.h"
++#include "weston-debug.h"
+ 
+ #define WINDOW_TITLE "Weston Compositor"
+ 
+@@ -508,6 +509,7 @@ usage(int error_code)
+ 		"  -c, --config=FILE\tConfig file to load, defaults to weston.ini\n"
+ 		"  --no-config\t\tDo not read weston.ini\n"
+ 		"  --wait-for-debugger\tRaise SIGSTOP on start-up\n"
++		"  --debug\t\tEnable debug extension\n"
+ 		"  -h, --help\t\tThis help message\n\n");
+ 
+ #if defined(BUILD_DRM_COMPOSITOR)
+@@ -2375,6 +2377,7 @@ int main(int argc, char *argv[])
+ 	char *socket_name = NULL;
+ 	int32_t version = 0;
+ 	int32_t noconfig = 0;
++	int32_t debug_protocol = 0;
+ 	int32_t numlock_on;
+ 	char *config_file = NULL;
+ 	struct weston_config *config = NULL;
+@@ -2399,6 +2402,7 @@ int main(int argc, char *argv[])
+ 		{ WESTON_OPTION_BOOLEAN, "no-config", 0, &noconfig },
+ 		{ WESTON_OPTION_STRING, "config", 'c', &config_file },
+ 		{ WESTON_OPTION_BOOLEAN, "wait-for-debugger", 0, &wait_for_debugger },
++		{ WESTON_OPTION_BOOLEAN, "debug", 0, &debug_protocol },
+ 	};
+ 
+ 	wl_list_init(&wet.layoutput_list);
+@@ -2486,6 +2490,9 @@ int main(int argc, char *argv[])
+ 	}
+ 	segv_compositor = wet.compositor;
+ 
++	if (debug_protocol)
++		weston_compositor_enable_debug_protocol(wet.compositor);
++
+ 	if (weston_compositor_init_config(wet.compositor, config) < 0)
+ 		goto out;
+ 
+diff --git a/man/weston.man b/man/weston.man
+index 44a73fa0..c09d4c2d 100644
+--- a/man/weston.man
++++ b/man/weston.man
+@@ -133,6 +133,17 @@ If also
+ .B --no-config
+ is given, no configuration file will be read.
+ .TP
++.BR \-\-debug
++Enable debug protocol extension
++.I weston_debug_v1
++which any client can use to receive debugging messages from the compositor.
++
++.B WARNING:
++This is risky for two reasons. First, a client may cause a denial-of-service
++blocking the compositor by providing an unsuitable file descriptor, and
++second, the debug messages may expose sensitive information. This option
++should not be used in production.
++.TP
+ .BR \-\-version
+ Print the program version.
+ .TP
+-- 
+2.16.2
+
