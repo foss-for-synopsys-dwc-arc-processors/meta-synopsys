@@ -1,0 +1,102 @@
+From c8a6ff84fd941c6c5ad2a312d05cf51f734fdd65 Mon Sep 17 00:00:00 2001
+From: Evgeniy Didin <Evgeniy.Didin@synopsys.com>
+Date: Tue, 26 Mar 2019 14:18:31 +0300
+Subject: [PATCH] Disable TLS for ARC
+
+Signed-off-by: Evgeniy Didin <Evgeniy.Didin@synopsys.com>
+---
+ src/corelib/global/qcompilerdetection.h | 9 ---------
+ src/corelib/thread/qthread_unix.cpp     | 2 +-
+ 2 files changed, 1 insertion(+), 10 deletions(-)
+
+diff --git a/src/corelib/global/qcompilerdetection.h b/src/corelib/global/qcompilerdetection.h
+index f46ff73527..205a6b66d6 100644
+--- a/src/corelib/global/qcompilerdetection.h
++++ b/src/corelib/global/qcompilerdetection.h
+@@ -388,7 +388,6 @@
+ #        define Q_COMPILER_RVALUE_REFS
+ #        define Q_COMPILER_STATIC_ASSERT
+ #        define Q_COMPILER_TEMPLATE_ALIAS
+-#        define Q_COMPILER_THREAD_LOCAL
+ #        define Q_COMPILER_THREADSAFE_STATICS
+ #        define Q_COMPILER_UDL
+ #        define Q_COMPILER_UNICODE_STRINGS
+@@ -539,7 +538,6 @@
+  *  N2118 N2844 N3053 Q_COMPILER_RVALUE_REFS            __cpp_rvalue_references = 200610
+  *  N1720           Q_COMPILER_STATIC_ASSERT            __cpp_static_assert = 200410
+  *  N2258           Q_COMPILER_TEMPLATE_ALIAS
+- *  N2659           Q_COMPILER_THREAD_LOCAL
+  *  N2660           Q_COMPILER_THREADSAFE_STATICS
+  *  N2765           Q_COMPILER_UDL                      __cpp_user_defined_literals = 200809
+  *  N2442           Q_COMPILER_UNICODE_STRINGS          __cpp_unicode_literals = 200710
+@@ -626,14 +624,12 @@
+ #      define Q_COMPILER_ALIGNAS
+ #      define Q_COMPILER_ALIGNOF
+ #      define Q_COMPILER_INHERITING_CONSTRUCTORS
+-#      define Q_COMPILER_THREAD_LOCAL
+ #      define Q_COMPILER_UDL
+ #    endif
+ #  elif defined(__STDC_VERSION__) && __STDC_VERSION__ > 199901L
+ //   C11 features supported. Only tested with ICC 17 and up.
+ #    define Q_COMPILER_STATIC_ASSERT
+ #    if __has_include(<threads.h>)
+-#      define Q_COMPILER_THREAD_LOCAL
+ #    endif
+ #  endif
+ #endif
+@@ -741,7 +737,6 @@
+ #    endif
+ #    if __has_feature(cxx_thread_local)
+ #      if !defined(__FreeBSD__) /* FreeBSD clang fails on __cxa_thread_atexit */
+-#        define Q_COMPILER_THREAD_LOCAL
+ #      endif
+ #    endif
+ #    if __has_feature(cxx_user_literals)
+@@ -793,7 +788,6 @@
+ #    endif
+ #    if __has_feature(c_thread_local) && __has_include(<threads.h>)
+ #      if !defined(__FreeBSD__) /* FreeBSD clang fails on __cxa_thread_atexit */
+-#        define Q_COMPILER_THREAD_LOCAL
+ #      endif
+ #    endif
+ #  endif
+@@ -878,7 +872,6 @@
+ #      define Q_COMPILER_ALIGNAS
+ #      define Q_COMPILER_ALIGNOF
+ #      define Q_COMPILER_INHERITING_CONSTRUCTORS
+-#      define Q_COMPILER_THREAD_LOCAL
+ #      if Q_CC_GNU > 408 || __GNUC_PATCHLEVEL__ >= 1
+ #         define Q_COMPILER_REF_QUALIFIERS
+ #      endif
+@@ -901,7 +894,6 @@
+ #    if Q_CC_GNU >= 409
+        /* C11 features supported in GCC 4.9: */
+ #      if __has_include(<threads.h>)
+-#        define Q_COMPILER_THREAD_LOCAL
+ #      endif
+ #    endif
+ #  endif
+@@ -951,7 +943,6 @@
+ #      define Q_COMPILER_NOEXCEPT
+ #      define Q_COMPILER_RANGE_FOR
+ #      define Q_COMPILER_REF_QUALIFIERS
+-#      define Q_COMPILER_THREAD_LOCAL
+ #      define Q_COMPILER_UDL
+ #      define Q_COMPILER_UNICODE_STRINGS
+ #      define Q_COMPILER_UNRESTRICTED_UNIONS
+diff --git a/src/corelib/thread/qthread_unix.cpp b/src/corelib/thread/qthread_unix.cpp
+index 9ad32b162d..05911d5207 100644
+--- a/src/corelib/thread/qthread_unix.cpp
++++ b/src/corelib/thread/qthread_unix.cpp
+@@ -109,7 +109,7 @@ Q_STATIC_ASSERT(sizeof(pthread_t) <= sizeof(Qt::HANDLE));
+ 
+ enum { ThreadPriorityResetFlag = 0x80000000 };
+ 
+-#if defined(Q_OS_LINUX) && defined(__GLIBC__) && (defined(Q_CC_GNU) || defined(Q_CC_INTEL)) && !defined(QT_LINUXBASE)
++#if defined(Q_OS_LINUX) && defined(__GLIBC__) && !defined(__arc__) && (defined(Q_CC_GNU) || defined(Q_CC_INTEL)) && !defined(QT_LINUXBASE)
+ /* LSB doesn't have __thread, https://lsbbugs.linuxfoundation.org/show_bug.cgi?id=993 */
+ #define HAVE_TLS
+ #endif
+-- 
+2.16.2
+
