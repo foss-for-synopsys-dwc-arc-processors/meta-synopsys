@@ -62,6 +62,7 @@ SRC_URI = "\
            file://0039-Fix-for-testsuite-failure.patch \
            file://0040-Re-introduce-spe-commandline-options.patch \
            file://0041-ARC-Emit-blockage-regardless-to-avoid-delay-slot-sch.patch \
+	   file://0042-ARC-Dont-throw-errors-when-compiling-for-xarch.patch \
            ${BACKPORTS} \
 "
 BACKPORTS = "\
