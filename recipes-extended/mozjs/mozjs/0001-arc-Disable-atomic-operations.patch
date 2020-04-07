@@ -1,0 +1,42 @@
+From d8881cbf62d8bb5bc2acc57a5cf976138446c2bc Mon Sep 17 00:00:00 2001
+From: Evgeniy Didin <Evgeniy.Didin@synopsys.com>
+Date: Thu, 2 Apr 2020 20:59:21 +0300
+Subject: [PATCH] arc: Disable atomic operations
+
+Signed-off-by: Evgeniy Didin <Evgeniy.Didin@synopsys.com>
+---
+ js/src/jit/AtomicOperations.h                    | 2 ++
+ js/src/jit/none/AtomicOperations-feeling-lucky.h | 4 ++++
+ 2 files changed, 6 insertions(+)
+
+diff --git a/js/src/jit/AtomicOperations.h b/js/src/jit/AtomicOperations.h
+index fda0b14..d583e4b 100644
+--- a/js/src/jit/AtomicOperations.h
++++ b/js/src/jit/AtomicOperations.h
+@@ -395,6 +395,8 @@ inline bool AtomicOperations::isLockfreeJS(int32_t size) {
+ #include "jit/none/AtomicOperations-feeling-lucky.h"
+ #elif defined(__riscv)
+ #include "jit/none/AtomicOperations-feeling-lucky.h"
++#elif defined(__arc__)
++#include "jit/none/AtomicOperations-feeling-lucky.h"
+ #else
+ #error "No AtomicOperations support provided for this platform"
+ #endif
+diff --git a/js/src/jit/none/AtomicOperations-feeling-lucky.h b/js/src/jit/none/AtomicOperations-feeling-lucky.h
+index 42b1f3e..f49f680 100644
+--- a/js/src/jit/none/AtomicOperations-feeling-lucky.h
++++ b/js/src/jit/none/AtomicOperations-feeling-lucky.h
+@@ -88,6 +88,10 @@
+ #endif
+ #endif
+ 
++#ifdef __arc__
++#define GNUC_COMPATIBLE
++#endif
++
+ // The default implementation tactic for gcc/clang is to use the newer
+ // __atomic intrinsics added for use in C++11 <atomic>.  Where that
+ // isn't available, we use GCC's older __sync functions instead.
+-- 
+2.16.2
+
