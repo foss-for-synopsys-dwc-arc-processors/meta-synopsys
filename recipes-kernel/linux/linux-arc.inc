@@ -6,17 +6,7 @@ LICENSE = "GPLv2"
 
 inherit kernel
 
-SRC_URI = "https://www.kernel.org/pub/linux/kernel/v4.x/linux-${PV}.tar.xz \
-	file://0002-etnaviv-Make-archtecture-and-platform-agnostic.patch \
-	file://0004-ARC-plat-hsdk-Add-support-of-Vivante-GPU.patch \
-	file://0006-devres-Really-align-data-field-to-unsigned-long-long.patch \
-	file://0007-ETHNAVIV-don-t-print-command-dump.patch \
-	file://0006-Use-dev-mmcblk0p2-as-rootfs-storage.patch \
-	file://0001-DRM-UDL-get-rid-of-useless-vblank-initialization.patch \
-	file://1001-Agl-hsdk-defconfig.patch \
-	file://3003-Experimental-ARC-increase-memory-to-1.5GB.patch \
-	file://6001-ARC-adjust-memblock_reserve-of-kernel-memory.patch \
-	file://8000-ARCv2-support-manual-regfile-save-on-interrupts.patch \
+SRC_URI = "https://www.kernel.org/pub/linux/kernel/v5.x/linux-${PV}.tar.xz \
 "
 #file://2001-ARC-prevent-showing-irrelevant-exception-info-in-sig.patch 
 #file://2002-ARC-split-show_faulting_vma-for-logic-and-representa.patch 
@@ -25,7 +15,6 @@ SRC_URI = "https://www.kernel.org/pub/linux/kernel/v4.x/linux-${PV}.tar.xz \
 
 #        file://1001-Agl-hsdk-defconfig.patch 
 #        file://5001-Enable-FBDEV_DRM-emulation-for-HSDK.patch 
-
 #        file://4001-HSDK-add-highmem-zone.patch 
 #        file://4002-ARC-temporary-disable-IOC.patch 
 #        file://4003-ARC-cache-ops-add-assertions.patch 
