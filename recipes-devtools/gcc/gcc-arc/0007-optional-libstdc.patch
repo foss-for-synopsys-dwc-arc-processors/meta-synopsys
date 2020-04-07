@@ -1,7 +1,7 @@
-From fb7df63e9548c29b70601d642a1850fc455f8565 Mon Sep 17 00:00:00 2001
+From e7e504f4a90cfa395e7f8ee779f8c3ed687802ca Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Fri, 29 Mar 2013 09:12:56 +0400
-Subject: [PATCH 07/39] optional libstdc
+Subject: [PATCH 05/36] optional libstdc
 
 gcc-runtime builds libstdc++ separately from gcc-cross-*. Its configure tests using g++
 will not run correctly since by default the linker will try to link against libstdc++
@@ -25,10 +25,10 @@ Upstream-Status: Inappropriate [embedded specific]
  4 files changed, 37 insertions(+), 1 deletion(-)
 
 diff --git a/gcc/c-family/c.opt b/gcc/c-family/c.opt
-index 5013501b232..6312f2c8f90 100644
+index 916cc67b453..41619fa591c 100644
 --- a/gcc/c-family/c.opt
 +++ b/gcc/c-family/c.opt
-@@ -1900,6 +1900,10 @@ nostdinc++
+@@ -1952,6 +1952,10 @@ nostdinc++
  C++ ObjC++
  Do not search standard system include directories for C++.
  
@@ -40,7 +40,7 @@ index 5013501b232..6312f2c8f90 100644
  C ObjC C++ ObjC++ Joined Separate
  ; Documented in common.opt
 diff --git a/gcc/cp/g++spec.c b/gcc/cp/g++spec.c
-index 443a1746da3..e9b51be62ef 100644
+index 6c4574a837d..0e2657f00ee 100644
 --- a/gcc/cp/g++spec.c
 +++ b/gcc/cp/g++spec.c
 @@ -137,6 +137,7 @@ lang_specific_driver (struct cl_decoded_option **in_decoded_options,
@@ -52,10 +52,10 @@ index 443a1746da3..e9b51be62ef 100644
  	  library = -1;
  	  break;
 diff --git a/gcc/doc/invoke.texi b/gcc/doc/invoke.texi
-index cb71b60fe3c..b0d481e3a30 100644
+index 09414d8cc05..a43969bc9f0 100644
 --- a/gcc/doc/invoke.texi
 +++ b/gcc/doc/invoke.texi
-@@ -211,6 +211,9 @@ in the following sections.
+@@ -228,6 +228,9 @@ in the following sections.
  -fno-weak  -nostdinc++ @gol
  -fvisibility-inlines-hidden @gol
  -fvisibility-ms-compat @gol
@@ -64,19 +64,19 @@ index cb71b60fe3c..b0d481e3a30 100644
 +-nostdlib++ @gol
  -fext-numeric-literals @gol
  -Wabi=@var{n}  -Wabi-tag  -Wconversion-null  -Wctor-dtor-privacy @gol
- -Wdelete-non-virtual-dtor  -Wliteral-suffix  -Wmultiple-inheritance @gol
-@@ -509,7 +512,7 @@ Objective-C and Objective-C++ Dialects}.
- -s  -static -static-pie -static-libgcc  -static-libstdc++ @gol
+ -Wdelete-non-virtual-dtor  -Wdeprecated-copy  -Wdeprecated-copy-dtor @gol
+@@ -538,7 +541,7 @@ Objective-C and Objective-C++ Dialects}.
+ -pie  -pthread  -r  -rdynamic @gol
+ -s  -static  -static-pie  -static-libgcc  -static-libstdc++ @gol
  -static-libasan  -static-libtsan  -static-liblsan  -static-libubsan @gol
- -static-libmpx  -static-libmpxwrappers @gol
 --shared  -shared-libgcc  -symbolic @gol
 +-shared  -shared-libgcc  -symbolic -nostdlib++ @gol
  -T @var{script}  -Wl,@var{option}  -Xlinker @var{option} @gol
  -u @var{symbol}  -z @var{keyword}}
  
-@@ -12331,6 +12334,33 @@ library subroutines.
- constructors are called; @pxref{Collect2,,@code{collect2}, gccint,
- GNU Compiler Collection (GCC) Internals}.)
+@@ -13312,6 +13315,33 @@ Specify that the program entry point is @var{entry}.  The argument is
+ interpreted by the linker; the GNU linker accepts either a symbol name
+ or an address.
  
 +@item -nostdlib++
 +@opindex nostdlib++
@@ -109,17 +109,17 @@ index cb71b60fe3c..b0d481e3a30 100644
  @opindex pie
  Produce a dynamically linked position independent executable on targets
 diff --git a/gcc/gcc.c b/gcc/gcc.c
-index 02b3cd39fc2..8cd27a5dad5 100644
+index a2601a6bb06..cd6c6fc95db 100644
 --- a/gcc/gcc.c
 +++ b/gcc/gcc.c
-@@ -1047,6 +1047,7 @@ proper position among the other output files.  */
+@@ -1052,6 +1052,7 @@ proper position among the other output files.  */
      %(mflib) " STACK_SPLIT_SPEC "\
      %{fprofile-arcs|fprofile-generate*|coverage:-lgcov} " SANITIZER_SPEC " \
-     %{!nostdlib:%{!nodefaultlibs:%(link_ssp) %(link_gcc_c_sequence)}}\
+     %{!nostdlib:%{!r:%{!nodefaultlibs:%(link_ssp) %(link_gcc_c_sequence)}}}\
 +    %{!nostdlib++:}\
-     %{!nostdlib:%{!nostartfiles:%E}} %{T*}  \n%(post_link) }}}}}}"
+     %{!nostdlib:%{!r:%{!nostartfiles:%E}}} %{T*}  \n%(post_link) }}}}}}"
  #endif
  
 -- 
-2.17.0
+2.22.1
 
