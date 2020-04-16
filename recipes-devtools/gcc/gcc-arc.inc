@@ -61,6 +61,7 @@ SRC_URI = "\
            file://0038-fix-segmentation-fault-in-precompiled-header-generat.patch \
            file://0039-Fix-for-testsuite-failure.patch \
            file://0040-Re-introduce-spe-commandline-options.patch \
+           file://0042-ARC-Dont-throw-errors-when-compiling-for-xarch.patch \
            ${BACKPORTS} \
 "
 BACKPORTS = "\
