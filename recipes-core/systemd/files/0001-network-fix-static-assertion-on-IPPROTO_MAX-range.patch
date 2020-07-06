@@ -1,0 +1,74 @@
+From c5e346905952fef0f163d91522dd43333f1f219d Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Zbigniew=20J=C4=99drzejewski-Szmek?= <zbyszek@in.waw.pl>
+Date: Thu, 16 Apr 2020 16:49:30 +0200
+Subject: [PATCH] network: fix static assertion on IPPROTO_MAX range
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Builds with recent glibc would fail with:
+../src/network/netdev/fou-tunnel.c: In function ‘config_parse_ip_protocol’:
+../src/basic/macro.h:380:9: error: static assertion failed: "IPPROTO_MAX-1 <= UINT8_MAX"
+  380 |         static_assert(expr, #expr)
+      |         ^~~~~~~~~~~~~
+../src/network/netdev/fou-tunnel.c:161:9: note: in expansion of macro ‘assert_cc’
+  161 |         assert_cc(IPPROTO_MAX-1 <= UINT8_MAX);
+      |         ^~~~~~~~~
+
+This is because f9ac84f92f151e07586c55e14ed628d493a5929d (present in
+glibc-2.31.9000-9.fc33.x86_64) added IPPROTO_MPTCP=262, following
+v5.5-rc5-1002-gfaf391c382 in the kernel.
+
+(cherry picked from commit 3d58d7328a6ecbc61d3494803d705edd8a108d72)
+---
+ src/network/netdev/fou-tunnel.c | 22 ++++++++++++++++------
+ 1 file changed, 16 insertions(+), 6 deletions(-)
+
+diff --git a/src/network/netdev/fou-tunnel.c b/src/network/netdev/fou-tunnel.c
+index 3cc273c7fe..40abacd6f7 100644
+--- a/src/network/netdev/fou-tunnel.c
++++ b/src/network/netdev/fou-tunnel.c
+@@ -149,7 +149,10 @@ int config_parse_ip_protocol(
+                 void *data,
+                 void *userdata) {
+ 
+-        uint8_t *protocol = data;
++        uint8_t *ret = data;
++        unsigned protocol;
++        /* linux/fou.h defines the netlink field as one byte, so we need to reject protocols numbers that
++         * don't fit in one byte. */
+         int r;
+ 
+         assert(filename);
+@@ -158,11 +161,11 @@ int config_parse_ip_protocol(
+         assert(rvalue);
+         assert(data);
+ 
+-        assert_cc(IPPROTO_MAX-1 <= UINT8_MAX);
+-
+         r = parse_ip_protocol(rvalue);
+-        if (r < 0) {
+-                r = safe_atou8(rvalue, protocol);
++        if (r >= 0)
++                protocol = r;
++        else {
++                r = safe_atou(rvalue, &protocol);
+                 if (r < 0)
+                         log_syntax(unit, LOG_ERR, filename, line, r,
+                                    "Failed to parse IP protocol '%s' for Foo over UDP tunnel, "
+@@ -170,7 +173,14 @@ int config_parse_ip_protocol(
+                 return 0;
+         }
+ 
+-        *protocol = r;
++        if (protocol > UINT8_MAX) {
++                log_syntax(unit, LOG_ERR, filename, line, 0,
++                           "IP protocol '%s' for FooOverUDP tunnel out of range, "
++                           "ignoring assignment: %m", rvalue);
++                return 0;
++        }
++
++        *ret = protocol;
+         return 0;
+ }
+ 
