@@ -1,7 +1,7 @@
-From 4a99f058030c86794bb96b582a7dbd631f963b06 Mon Sep 17 00:00:00 2001
-From: Khem Raj <raj.khem@gmail.com>
-Date: Mon, 2 Mar 2015 01:58:54 +0000
-Subject: [PATCH 01/15] binutils-crosssdk: Generate relocatable SDKs
+From 0ba27f807d86490d0563d776ec32719262a54bb4 Mon Sep 17 00:00:00 2001
+From: Evgeniy Didin <Evgeniy.Didin@synopsys.com>
+Date: Wed, 15 Apr 2020 13:13:19 +0300
+Subject: [PATCH] binutils-crosssdk: Generate relocatable SDKs
 
 This patch will modify the ELF linker scripts so that the crosssdk
 linker will generate binaries with a 4096 bytes PT_INTERP section. When the binaries
@@ -12,41 +12,42 @@ Upstream-Status: Inappropriate [SDK specific]
 
 Signed-off-by: Laurentiu Palcu <laurentiu.palcu@intel.com>
 Signed-off-by: Khem Raj <raj.khem@gmail.com>
+Signed-off-by: Evgeniy Didin <Evgeniy.Didin@synopsys.com>
 ---
  ld/genscripts.sh      | 3 +++
  ld/scripttempl/elf.sc | 4 ++--
  2 files changed, 5 insertions(+), 2 deletions(-)
 
 diff --git a/ld/genscripts.sh b/ld/genscripts.sh
-index 370b22269d..a5c367aa8f 100755
+index cb2b081e9e9..db2e9fd569d 100755
 --- a/ld/genscripts.sh
 +++ b/ld/genscripts.sh
-@@ -279,6 +279,7 @@ DATA_ALIGNMENT_u="${DATA_ALIGNMENT_u-${DATA_ALIGNMENT_r}}"
+@@ -325,6 +325,7 @@ DATA_ALIGNMENT_u="${DATA_ALIGNMENT_u-${DATA_ALIGNMENT_r}}"
  LD_FLAG=r
  DATA_ALIGNMENT=${DATA_ALIGNMENT_r}
  DEFAULT_DATA_ALIGNMENT="ALIGN(${SEGMENT_SIZE})"
 +PARTIAL_LINKING=" "
  ( echo "/* Script for ld -r: link without relocation */"
-   . ${CUSTOMIZER_SCRIPT}
-   . ${srcdir}/scripttempl/${SCRIPT_NAME}.sc
-@@ -287,10 +288,12 @@ DEFAULT_DATA_ALIGNMENT="ALIGN(${SEGMENT_SIZE})"
+   source_sh ${CUSTOMIZER_SCRIPT}
+   source_sh ${srcdir}/scripttempl/${SCRIPT_NAME}.sc
+@@ -333,10 +334,12 @@ DEFAULT_DATA_ALIGNMENT="ALIGN(${SEGMENT_SIZE})"
  LD_FLAG=u
  DATA_ALIGNMENT=${DATA_ALIGNMENT_u}
  CONSTRUCTING=" "
 +PARTIAL_LINKING=" "
  ( echo "/* Script for ld -Ur: link w/out relocation, do create constructors */"
-   . ${CUSTOMIZER_SCRIPT}
-   . ${srcdir}/scripttempl/${SCRIPT_NAME}.sc
+   source_sh ${CUSTOMIZER_SCRIPT}
+   source_sh ${srcdir}/scripttempl/${SCRIPT_NAME}.sc
  ) | sed -e '/^ *$/d;s/[	 ]*$//' > ldscripts/${EMULATION_NAME}.xu
 +unset PARTIAL_LINKING
  
  DATA_ALIGNMENT=${DATA_ALIGNMENT_}
  RELOCATING=" "
 diff --git a/ld/scripttempl/elf.sc b/ld/scripttempl/elf.sc
-index 444aef2942..afa99f736d 100644
+index c3ad467bff4..a847ffecc19 100644
 --- a/ld/scripttempl/elf.sc
 +++ b/ld/scripttempl/elf.sc
-@@ -139,8 +139,8 @@ if test -z "$DATA_SEGMENT_ALIGN"; then
+@@ -140,8 +140,8 @@ if test -z "$DATA_SEGMENT_ALIGN"; then
      DATA_SEGMENT_RELRO_END=". = DATA_SEGMENT_RELRO_END (${SEPARATE_GOTPLT-0}, .);"
    fi
  fi
@@ -58,5 +59,5 @@ index 444aef2942..afa99f736d 100644
  if test -z "$PLT"; then
    IPLT=".iplt         ${RELOCATING-0} : { *(.iplt) }"
 -- 
-2.18.0
+2.16.2
 
