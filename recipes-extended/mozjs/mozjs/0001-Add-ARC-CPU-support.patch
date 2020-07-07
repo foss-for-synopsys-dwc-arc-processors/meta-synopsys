@@ -1,0 +1,77 @@
+From 9171149440fcb1e8c3459372716577cd81e62734 Mon Sep 17 00:00:00 2001
+From: Evgeniy Didin <Evgeniy.Didin@synopsys.com>
+Date: Thu, 2 Apr 2020 20:33:21 +0300
+Subject: [PATCH] mozjs: Introduce ARC support
+
+Signed-off-by: Evgeniy Didin <Evgeniy.Didin@synopsys.com>
+---
+ build/autoconf/config.guess                      | 3 +++
+ build/moz.configure/init.configure               | 3 +++
+ mfbt/double-conversion/double-conversion/utils.h | 2 +-
+ python/mozbuild/mozbuild/configure/constants.py  | 2 ++
+ 4 files changed, 9 insertions(+), 1 deletion(-)
+
+diff --git a/build/autoconf/config.guess b/build/autoconf/config.guess
+index 1277a86..e3c40ec 100755
+--- a/build/autoconf/config.guess
++++ b/build/autoconf/config.guess
+@@ -1032,6 +1032,9 @@ EOF
+     riscv32:Linux:*:* | riscv64:Linux:*:*)
+ 	echo ${UNAME_MACHINE}-unknown-linux-${LIBC}
+ 	exit ;;
++    arc:Linux:*:*)
++        echo ${UNAME_MACHINE}-unknown-linux-${LIBC}
++        exit ;;
+     s390:Linux:*:* | s390x:Linux:*:*)
+ 	echo ${UNAME_MACHINE}-ibm-linux-${LIBC}
+ 	exit ;;
+diff --git a/build/moz.configure/init.configure b/build/moz.configure/init.configure
+index 648ac2d..7618f08 100644
+--- a/build/moz.configure/init.configure
++++ b/build/moz.configure/init.configure
+@@ -661,6 +661,9 @@ def split_triplet(triplet, allow_unknown=False):
+     elif cpu in ('riscv32', 'riscv64'):
+         canonical_cpu = cpu
+         endianness = 'little'
++    elif cpu in ('arc'):
++        canonical_cpu = 'arc'
++        endianness = 'little'
+     elif allow_unknown:
+         canonical_cpu = cpu
+         endianness = 'unknown'
+diff --git a/mfbt/double-conversion/double-conversion/utils.h b/mfbt/double-conversion/double-conversion/utils.h
+index 5f17c04..f4ff736 100644
+--- a/mfbt/double-conversion/double-conversion/utils.h
++++ b/mfbt/double-conversion/double-conversion/utils.h
+@@ -77,7 +77,7 @@ inline void abort_noreturn() { MOZ_CRASH(); }
+     defined(__SH4__) || defined(__alpha__) || \
+     defined(_MIPS_ARCH_MIPS32R2) || \
+     defined(__AARCH64EL__) || defined(__aarch64__) || \
+-    defined(__riscv)
++    defined(__riscv) || defined(__arc__)
+ #define DOUBLE_CONVERSION_CORRECT_DOUBLE_OPERATIONS 1
+ #elif defined(__mc68000__)
+ #undef DOUBLE_CONVERSION_CORRECT_DOUBLE_OPERATIONS
+diff --git a/python/mozbuild/mozbuild/configure/constants.py b/python/mozbuild/mozbuild/configure/constants.py
+index 1067b6a..1f700b8 100644
+--- a/python/mozbuild/mozbuild/configure/constants.py
++++ b/python/mozbuild/mozbuild/configure/constants.py
+@@ -52,6 +52,7 @@ CPU_bitness = {
+     'ppc64': 64,
+     'riscv32': 32,
+     'riscv64': 64,
++    'arc': 32,
+     's390': 32,
+     's390x': 64,
+     'sh4': 32,
+@@ -86,6 +87,7 @@ CPU_preprocessor_checks = OrderedDict((
+     ('ppc', '__powerpc__'),
+     ('riscv32', '__riscv && __SIZEOF_POINTER__ == 4'),
+     ('riscv64', '__riscv && __SIZEOF_POINTER__ == 8'),
++    ('arc', '__arc__'),
+     ('Alpha', '__alpha__'),
+     ('hppa', '__hppa__'),
+     ('sparc64', '__sparc__ && __arch64__'),
+-- 
+2.16.2
+
