@@ -1,0 +1,26 @@
+From 88bee9ba10dbbcd8d58d8444baf638a570b3679d Mon Sep 17 00:00:00 2001
+From: Evgeniy Didin <Evgeniy.Didin@synopsys.com>
+Date: Tue, 14 Jul 2020 15:03:27 +0300
+Subject: [PATCH] Fix build with GCC9
+
+Signed-off-by: Evgeniy Didin <Evgeniy.Didin@synopsys.com>
+---
+ src/main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/main.c b/src/main.c
+index 99512d5..4adf9ce 100644
+--- a/src/main.c
++++ b/src/main.c
+@@ -1235,7 +1235,7 @@ log_timestamp(char *buf, size_t len)
+ 
+ 	strftime(timestr, sizeof(timestr), "%H:%M:%S", brokendown_time);
+ 	/* if datestr is empty it prints only timestr*/
+-	snprintf(buf, len, "%s[%s.%03li]", datestr,
++	snprintf(buf, len, "%s[%s.%03lli]", datestr,
+ 			timestr, (tv.tv_usec / 1000));
+ 
+ 	return buf;
+-- 
+2.16.2
+
