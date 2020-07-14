@@ -1,7 +1,7 @@
 CFLAGS_append += " -Wno-error"
 EXTRA_OECONF += " --disable-werror --disable-multilib"
-SRCBRANCH = "vineet/arc-port-latest"
-SRCREV_glibc = "9cd814f16dc973edd10a72a2929708eaee7dc74b"
+SRCBRANCH = "master"
+SRCREV_glibc = "758caf37366c3bebd349cd3107341dbfd761189a"
 SRC_URI =  "${GLIBC_GIT_URI};branch=${SRCBRANCH};name=glibc \
            file://etc/ld.so.conf \
            file://generate-supported.mk \
@@ -16,7 +16,6 @@ SRC_URI =  "${GLIBC_GIT_URI};branch=${SRCBRANCH};name=glibc \
            file://0013-eglibc-run-libm-err-tab.pl-with-specific-dirs-in-S.patch \
            file://0014-__ieee754_sqrt-f-are-now-inline-functions-and-call-o.patch \
            file://0015-sysdeps-gnu-configure.ac-handle-correctly-libc_cv_ro.patch \
-           file://0016-Add-unused-attribute.patch \
            file://0017-yes-within-the-path-sets-wrong-config-variables.patch \
            file://0018-timezone-re-written-tzselect-as-posix-sh.patch \
            file://0019-Remove-bash-dependency-for-nscd-init-script.patch \
@@ -28,7 +27,6 @@ SRC_URI =  "${GLIBC_GIT_URI};branch=${SRCBRANCH};name=glibc \
            file://0025-localedef-add-to-archive-uses-a-hard-coded-locale-pa.patch \
            file://0026-elf-dl-deps.c-Make-_dl_build_local_scope-breadth-fir.patch \
            file://0027-intl-Emit-no-lines-in-bison-generated-files.patch \
-           file://0028-inject-file-assembly-directives.patch \
            file://0029-locale-prevent-maybe-uninitialized-errors-with-Os-BZ.patch \
            "
 
