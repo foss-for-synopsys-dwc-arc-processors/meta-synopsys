@@ -20,7 +20,7 @@ bitbake-layers add-layer ../meta-synopsys
 ### Start building
  * `vmlinux` usable with nSIM simulator
     - for ARC700: `MACHINE=nsim700 bitbake virtual/kernel`
-    - for ARCHS38: `MACHINE=nsimhs bitbake virtual/kernel`
+    - for ARCHS38: `MACHINE=hapshs bitbake virtual/kernel`
 
  * SD-card image
     - for AXS101: `MACHINE=axs101 bitbake core-image-base`
