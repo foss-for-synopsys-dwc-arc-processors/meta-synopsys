@@ -23,15 +23,15 @@ TUNE_CCARGS .= "${@bb.utils.contains('TUNE_FEATURES', 'fpud_all', ' -mfpu=fpud_a
 
 AVAILTUNES += "archs hs38 hs38linux"
 
-TUNE_FEATURES_tune-archs = "hs llsc64 mpy"
+TUNE_FEATURES_tune-archs = "hs llsc64 div_rem mpy"
 TUNE_PKGARCH_tune-archs = "archs"
 PACKAGE_EXTRA_ARCHS_tune-archs = "archs hs38 hs38linux"
 
-TUNE_FEATURES_tune-hs38 = "hs llsc64 plus_qmacw"
+TUNE_FEATURES_tune-hs38 = "hs llsc64 div_rem plus_qmacw"
 TUNE_PKGARCH_tune-hs38 = "hs38"
 PACKAGE_EXTRA_ARCHS_tune-hs38 = "hs38 hs38linux"
 
-TUNE_FEATURES_tune-hs38linux = "hs llsc64 plus_qmacw fpud_all"
+TUNE_FEATURES_tune-hs38linux = "hs llsc64 div_rem plus_qmacw fpud_all"
 TUNE_PKGARCH_tune-hs38linux = "hs38linux"
 PACKAGE_EXTRA_ARCHS_tune-hs38linux = "hs38linux"
 
