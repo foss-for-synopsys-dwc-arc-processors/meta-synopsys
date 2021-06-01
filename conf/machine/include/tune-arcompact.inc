@@ -1,6 +1,6 @@
 require arch-arc.inc
 
-DEFAULTTUNE ?= "arc770"
+DEFAULTTUNE ??= "arc770"
 TUNE_PKGARCH = "${TUNE_PKGARCH_tune-${DEFAULTTUNE}}"
 
 TUNEVALID[arc750] = "Standard ARComact ARC750 core"

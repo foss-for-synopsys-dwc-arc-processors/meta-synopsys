@@ -1,6 +1,6 @@
 require arch-arc.inc
 
-DEFAULTTUNE ?= "archs"
+DEFAULTTUNE ??= "archs"
 TUNE_PKGARCH = "${TUNE_PKGARCH_tune-${DEFAULTTUNE}}"
 
 TUNEVALID[hs] = "Enable ARC HS core with 32-bit atomic ops"
