@@ -10,17 +10,32 @@ LIC_FILES_CHKSUM="\
     file://bfd/COPYING;md5=d32239bcb673463ab874e80d47fae504\
     "
 
-SRCREV ?= "arc-2018.09-release"
+# When upgrading to 2.37, please make sure there is no trailing .0, so
+# that upstream version check can work correctly.
+PV = "arc"
+CVE_VERSION = "2.36.1"
 
+RELEASE ?= "arc-2021.03"
+BINUTILS_GIT_URI ?= "git://github.com/foss-for-synopsys-dwc-arc-processors/binutils-gdb.git;protocol=https;branch=${RELEASE}"
+
+SRCREV ?= "${RELEASE}-release"
 SRC_URI = "\
-     git://github.com/foss-for-synopsys-dwc-arc-processors/binutils-gdb;protocol=https;branch=arc-2018.09; \
-     file://0004-Point-scripts-location-to-libdir.patch \
-     file://0005-Only-generate-an-RPATH-entry-if-LD_RUN_PATH-is-not-e.patch \
-     file://0008-don-t-let-the-distro-compiler-point-to-the-wrong-ins.patch \
-     file://0009-warn-for-uses-of-system-directories-when-cross-linki.patch \
+     ${BINUTILS_GIT_URI} \
+     file://0004-configure-widen-the-regexp-for-SH-architectures.patch \
+     file://0005-Point-scripts-location-to-libdir.patch \
+     file://0006-Only-generate-an-RPATH-entry-if-LD_RUN_PATH-is-not-e.patch \
+     file://0007-don-t-let-the-distro-compiler-point-to-the-wrong-ins.patch \
+     file://0008-warn-for-uses-of-system-directories-when-cross-linki.patch \
+     file://0009-Change-default-emulation-for-mips64-linux.patch \
+     file://0010-Add-support-for-Netlogic-XLP.patch \
+     file://0011-fix-the-incorrect-assembling-for-ppc-wait-mnemonic.patch \
+     file://0012-Detect-64-bit-MIPS-targets.patch \
+     file://0013-Use-libtool-2.4.patch \
+     file://0014-Fix-rpath-in-libtool-when-sysroot-is-enabled.patch \
+     file://0015-sync-with-OE-libtool-changes.patch \
+     file://0016-Check-for-clang-before-checking-gcc-version.patch \
+     file://0017-Add-support-for-the-DW_FORM_strx-forms-to-the-BFD-li.patch \
+     file://0018-Add-DWARF-5-support-in-gold.patch \
+     file://CVE-2021-20197.patch \
 "
 S  = "${WORKDIR}/git"
-
-do_configure_prepend () {
-        rm -rf ${S}/gdb ${S}/libdecnumber ${S}/readline ${S}/sim
-}

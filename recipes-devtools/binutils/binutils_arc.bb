@@ -18,7 +18,19 @@ EXTRA_OECONF_class-native = "--enable-targets=all \
                              --enable-64-bit-bfd \
                              --enable-install-libiberty \
                              --enable-install-libbfd \
+                             --disable-gdb \
+                             --disable-gdbserver \
+                             --disable-libdecnumber \
+                             --disable-readline \
+                             --disable-sim \
                              --disable-werror"
+
+PACKAGECONFIG ??= "${@bb.utils.filter('DISTRO_FEATURES', 'debuginfod', d)}"
+PACKAGECONFIG[debuginfod] = "--with-debuginfod, --without-debuginfod, elfutils"
+# gcc9.0 end up mis-compiling libbfd.so with O2 which then crashes on target
+# So remove -O2 and use -Os as workaround
+SELECTED_OPTIMIZATION_remove_mipsarch = "-O2"
+SELECTED_OPTIMIZATION_append_mipsarch = " -Os"
 
 do_install_class-native () {
 	autotools_do_install
@@ -42,8 +54,20 @@ do_install_class-native () {
 	rmdir ${D}/${libdir}64 || :
 }
 
-# Split out libbfd-*.so so including perf doesn't include extra stuff
-PACKAGE_BEFORE_PN += "libbfd"
-FILES_libbfd = "${libdir}/libbfd-*.so"
+# libctf races with libbfd
+PARALLEL_MAKEINST_class-target = ""
+PARALLEL_MAKEINST_class-nativesdk = ""
+
+# Split out libbfd-*.so and libopcodes-*.so so including perf doesn't include
+# extra stuff
+PACKAGE_BEFORE_PN += "libbfd libopcodes"
+FILES_libbfd = "${libdir}/libbfd-*.so.* ${libdir}/libbfd-*.so"
+FILES_libopcodes = "${libdir}/libopcodes-*.so.* ${libdir}/libopcodes-*.so"
+
+SRC_URI_append_class-nativesdk =  " file://0003-binutils-nativesdk-Search-for-alternative-ld.so.conf.patch "
+
+USE_ALTERNATIVES_FOR_class-nativesdk = ""
+FILES_${PN}_append_class-nativesdk = " ${bindir}"
 
 BBCLASSEXTEND = "native nativesdk"
+
