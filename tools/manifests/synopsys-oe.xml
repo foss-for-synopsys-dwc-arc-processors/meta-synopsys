@@ -5,7 +5,7 @@
   <remote name="synopsys" fetch="https://github.com/foss-for-synopsys-dwc-arc-processors/" />
   <default remote="openembedded" revision="master" />
 
-  <project name="meta-synopsys" remote="synopsys" path="meta-synopsys" revision="master" />
+  <project name="meta-synopsys" remote="synopsys" path="meta-synopsys" revision="debian" />
   <project name="openembedded-core" remote="openembedded" path="openembedded-core" revision="master" />
   <project name="bitbake" remote="openembedded" path="openembedded-core/bitbake" revision="master" />
   <project name="meta-openembedded" remote="openembedded" path="meta-openembedded" revision="master" />

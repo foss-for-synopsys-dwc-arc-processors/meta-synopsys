@@ -6,7 +6,7 @@
 ```
 mkdir oe
 cd oe
-repo init -u https://github.com/foss-for-synopsys-dwc-arc-processors/meta-synopsys -b master -m tools/manifests/synopsys-oe.xml
+repo init -u https://github.com/foss-for-synopsys-dwc-arc-processors/meta-synopsys -b debian -m tools/manifests/synopsys-oe.xml
 repo sync
 ```
 
