@@ -3,6 +3,7 @@ require recipes-devtools/gcc/gcc-common.inc
 # Third digit in PV should be incremented after a minor release
 
 PV = "arc"
+PE = "4"
 
 # BINV should be incremented to a revision after a minor gcc release
 
