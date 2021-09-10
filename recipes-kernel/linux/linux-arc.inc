@@ -12,13 +12,13 @@ SRC_URI = "\
 S = "${WORKDIR}/linux-${PV}"
 
 DEPENDS += " libgcc"
-KERNEL_CC_append = " ${TOOLCHAIN_OPTIONS}"
+KERNEL_CC:append = " ${TOOLCHAIN_OPTIONS}"
 
-KERNEL_DEFCONFIG_axs101 = "axs101"
-KERNEL_DEFCONFIG_axs103 = "axs103_smp"
-KERNEL_DEFCONFIG_hsdk = "hsdk"
-KERNEL_DEFCONFIG_nsim700 = "nsim_700"
-KERNEL_DEFCONFIG_hapshs = "haps_hs"
+KERNEL_DEFCONFIG:axs101 = "axs101"
+KERNEL_DEFCONFIG:axs103 = "axs103_smp"
+KERNEL_DEFCONFIG:hsdk = "hsdk"
+KERNEL_DEFCONFIG:nsim700 = "nsim_700"
+KERNEL_DEFCONFIG:hapshs = "haps_hs"
 
 KERNEL_CONFIG_COMMAND = "oe_runmake -C ${S} O=${B} ${KERNEL_DEFCONFIG}_defconfig"
 
