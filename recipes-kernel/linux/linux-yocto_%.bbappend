@@ -1,8 +1,8 @@
-FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
 
-COMPATIBLE_MACHINE_append = "|hsdk|hapshs"
+COMPATIBLE_MACHINE:append = "|hsdk|hapshs"
 
-KERNEL_CC_append = " ${TOOLCHAIN_OPTIONS}"
+KERNEL_CC:append = " ${TOOLCHAIN_OPTIONS}"
 
 SRC_URI += "\
     "

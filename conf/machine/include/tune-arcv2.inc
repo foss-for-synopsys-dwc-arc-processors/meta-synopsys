@@ -23,17 +23,17 @@ TUNE_CCARGS .= "${@bb.utils.contains('TUNE_FEATURES', 'fpud_all', ' -mfpu=fpud_a
 
 AVAILTUNES += "archs hs38 hs38_linux"
 
-TUNE_FEATURES_tune-archs = "hs llsc64 div_rem mpy"
+TUNE_FEATURES:tune-archs = "hs llsc64 div_rem mpy"
 TUNE_PKGARCH_tune-archs = "archs"
-PACKAGE_EXTRA_ARCHS_tune-archs = "archs hs38 hs38_linux"
+PACKAGE_EXTRA_ARCHS:tune-archs = "archs hs38 hs38_linux"
 
-TUNE_FEATURES_tune-hs38 = "hs llsc64 div_rem plus_qmacw"
+TUNE_FEATURES:tune-hs38 = "hs llsc64 div_rem plus_qmacw"
 TUNE_PKGARCH_tune-hs38 = "hs38"
-PACKAGE_EXTRA_ARCHS_tune-hs38 = "hs38 hs38_linux"
+PACKAGE_EXTRA_ARCHS:tune-hs38 = "hs38 hs38_linux"
 
-TUNE_FEATURES_tune-hs38_linux = "hs llsc64 div_rem plus_qmacw fpud_all"
+TUNE_FEATURES:tune-hs38_linux = "hs llsc64 div_rem plus_qmacw fpud_all"
 TUNE_PKGARCH_tune-hs38_linux = "hs38_linux"
-PACKAGE_EXTRA_ARCHS_tune-hs38_linux = "hs38_linux"
+PACKAGE_EXTRA_ARCHS:tune-hs38_linux = "hs38_linux"
 
 def arc_machine_dict(machdata, d):
     machdata = {
