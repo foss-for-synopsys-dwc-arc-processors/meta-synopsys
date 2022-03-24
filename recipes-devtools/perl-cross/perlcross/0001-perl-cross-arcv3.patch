@@ -1,0 +1,33 @@
+Add support for ARCv3
+
+Signed-off-by: Sergey Matyukevich <sergey.matyukevich@synopsys.com>
+
+Upstream-Status: Inappropriate (triplet names are not yet finalized)
+---
+
+diff --git a/cnf/config.guess b/cnf/config.guess
+index 97ad073..6525388 100755
+--- a/cnf/config.guess
++++ b/cnf/config.guess
+@@ -934,7 +934,7 @@ EOF
+ 	if test "$?" = 0 ; then LIBC=gnulibc1 ; fi
+ 	echo "$UNAME_MACHINE"-unknown-linux-"$LIBC"
+ 	exit ;;
+-    arc:Linux:*:* | arceb:Linux:*:*)
++    arc:Linux:*:* | arc32:Linux:*:* | arc64:Linux:*:* | arceb:Linux:*:*)
+ 	echo "$UNAME_MACHINE"-unknown-linux-"$LIBC"
+ 	exit ;;
+     arm*:Linux:*:*)
+diff --git a/cnf/config.sub b/cnf/config.sub
+index a318a46..45ee4eb 100755
+--- a/cnf/config.sub
++++ b/cnf/config.sub
+@@ -1163,7 +1163,7 @@ case $cpu-$vendor in
+ 			| alphapca5[67] | alpha64pca5[67] \
+ 			| am33_2.0 \
+ 			| amdgcn \
+-			| arc | arceb \
++			| arc | arceb | arc32 | arc64 \
+ 			| arm  | arm[lb]e | arme[lb] | armv* \
+ 			| avr | avr32 \
+ 			| asmjs \
