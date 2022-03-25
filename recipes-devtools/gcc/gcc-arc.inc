@@ -6,7 +6,7 @@ PV = "arc"
 
 # BINV should be incremented to a revision after a minor gcc release
 
-BINV = "10.2.0"
+BINV = "11.2.1"
 
 FILESEXTRAPATHS =. "${FILE_DIRNAME}/gcc-arc:"
 
@@ -23,25 +23,20 @@ LIC_FILES_CHKSUM = "\
     file://COPYING.RUNTIME;md5=fe60d87048567d4fe8c8a0ed2448bcc8 \
 "
 
-RELEASE ?= "arc-2021.03"
+RELEASE ?= "arc-2022.03"
 BASEURI ?= "git://github.com/foss-for-synopsys-dwc-arc-processors/gcc.git;protocol=https;branch=${RELEASE}"
 
-SRCREV ?= "${RELEASE}-release"
+# SRCREV tagged arc-2022.03-release
+SRCREV ?= "a01d12e8814c89cd1e131f69a417458ab96e3a21"
 SRC_URI = "\
            ${BASEURI} \
            file://0001-gcc-4.3.1-ARCH_FLAGS_FOR_TARGET.patch \
            file://0002-gcc-poison-system-directories.patch \
-           file://0003-gcc-4.3.3-SYSROOT_CFLAGS_FOR_TARGET.patch \
            file://0004-64-bit-multilib-hack.patch \
-           file://0005-optional-libstdc.patch \
-           file://0006-COLLECT_GCC_OPTIONS.patch \
            file://0007-Use-the-defaults.h-in-B-instead-of-S-and-t-oe-in-B.patch \
-           file://0008-fortran-cross-compile-hack.patch \
            file://0009-cpp-honor-sysroot.patch \
-           file://0010-MIPS64-Default-to-N64-ABI.patch \
            file://0011-Define-GLIBC_DYNAMIC_LINKER-and-UCLIBC_DYNAMIC_LINKE.patch \
            file://0012-gcc-Fix-argument-list-too-long-error.patch \
-           file://0013-Disable-sdt.patch \
            file://0014-libtool.patch \
            file://0015-gcc-armv4-pass-fix-v4bx-to-linker-to-support-EABI.patch \
            file://0016-Use-the-multilib-config-files-from-B-instead-of-usin.patch \
@@ -49,29 +44,23 @@ SRC_URI = "\
            file://0018-export-CPP.patch \
            file://0019-Ensure-target-gcc-headers-can-be-included.patch \
            file://0020-Don-t-search-host-directory-during-relink-if-inst_pr.patch \
-           file://0021-Use-SYSTEMLIBS_DIR-replacement-instead-of-hardcoding.patch \
-           file://0022-aarch64-Add-support-for-musl-ldso.patch \
            file://0023-libcc1-fix-libcc1-s-install-path-and-rpath.patch \
            file://0024-handle-sysroot-support-for-nativesdk-gcc.patch \
            file://0025-Search-target-sysroot-gcc-version-specific-dirs-with.patch \
-           file://0026-Fix-various-_FOR_BUILD-and-related-variables.patch \
            file://0027-nios2-Define-MUSL_DYNAMIC_LINKER.patch \
            file://0028-Add-ssp_nonshared-to-link-commandline-for-musl-targe.patch \
            file://0029-Link-libgcc-using-LDFLAGS-not-just-SHLIB_LDFLAGS.patch \
            file://0030-sync-gcc-stddef.h-with-musl.patch \
-           file://0031-fix-segmentation-fault-in-precompiled-header-generat.patch \
-           file://0032-Fix-for-testsuite-failure.patch \
            file://0033-Re-introduce-spe-commandline-options.patch \
            file://0034-libgcc_s-Use-alias-for-__cpu_indicator_init-instead-.patch \
            file://0035-gentypes-genmodes-Do-not-use-__LINE__-for-maintainin.patch \
            file://0036-mingw32-Enable-operation_not_supported.patch \
            file://0037-libatomic-Do-not-enforce-march-on-aarch64.patch \
-           file://0001-aarch64-New-Straight-Line-Speculation-SLS-mitigation.patch \
-           file://0002-aarch64-Introduce-SLS-mitigation-for-RET-and-BR-inst.patch \
-           file://0003-aarch64-Mitigate-SLS-for-BLR-instruction.patch \
-           file://0001-aarch64-Fix-up-__aarch64_cas16_acq_rel-fallback.patch \
-           file://0001-libatomic-libgomp-libitc-Fix-bootstrap-PR70454.patch \
+           file://0041-apply-debug-prefix-maps-before-checksumming-DIEs.patch \
+           file://0006-If-CXXFLAGS-contains-something-unsupported-by-the-bu.patch \
+           file://0001-Fix-install-path-of-linux64.h.patch \
 "
+
 
 S = "${TMPDIR}/work-shared/gcc-${PV}-${PR}/git"
 B = "${WORKDIR}/gcc-${PV}/build.${HOST_SYS}.${TARGET_SYS}"
@@ -87,6 +76,7 @@ EXTRA_OECONF_BASE = "\
     ${SSP} \
     --enable-libitm \
     --enable-lto \
+    --enable-tls \
     --disable-bootstrap \
     --with-system-zlib \
     ${@'--with-linker-hash-style=${LINKER_HASH_STYLE}' if '${LINKER_HASH_STYLE}' else ''} \
@@ -104,6 +94,7 @@ EXTRA_OECONF_INITIAL = "\
     --disable-libquadmath \
     --with-system-zlib \
     --disable-lto \
+    --enable-tls \
     --disable-plugin \
     --enable-linker-build-id \
     --enable-decimal-float=no \
